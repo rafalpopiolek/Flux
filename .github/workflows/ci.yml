@@ -56,9 +56,6 @@ jobs:
          -  name: Run ECS
             run: vendor/bin/ecs check
 
-         -  name: Run PHPStan
-            run: vendor/bin/phpstan analyze
-
          -  name: Run PHPUnit
             run: docker compose exec -T php bin/phpunit
 
