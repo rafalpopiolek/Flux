@@ -53,7 +53,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $status = match ($form->isSubmitted() && !$form->isValid()) {
+        $status = match ($form->isSubmitted() && ! $form->isValid()) {
             true => Response::HTTP_UNPROCESSABLE_ENTITY,
             default => Response::HTTP_OK,
         };
