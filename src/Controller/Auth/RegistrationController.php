@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Auth;
 
 use App\Entity\User;
+use App\Enum\Identity\Role;
 use App\Event\UserHasBeenCreatedEvent;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,6 +39,9 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setRoles([
+                Role::USER->value,
+            ]);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
