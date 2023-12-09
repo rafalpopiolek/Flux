@@ -53,8 +53,13 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $status = match ($form->isSubmitted() && !$form->isValid()) {
+            true => Response::HTTP_UNPROCESSABLE_ENTITY,
+            default => Response::HTTP_OK,
+        };
+
         return $this->render('auth/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-        ]);
+        ], new Response(null, $status));
     }
 }
