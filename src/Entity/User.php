@@ -6,6 +6,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -42,9 +44,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
 
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, cascade: ['remove'])]
+    private Collection $posts;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,9 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
+    /** @see UserInterface */
     public function getRoles(): array
     {
         return array_unique(
@@ -91,9 +95,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
+    /** @see PasswordAuthenticatedUserInterface */
     public function getPassword(): string
     {
         return $this->password;
@@ -106,9 +108,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
+    /** @see UserInterface */
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
@@ -142,5 +142,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    /** @return Collection<int, Post> */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
     }
 }
