@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" class="">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -11,7 +11,11 @@
             {{ importmap('app') }}
         {% endblock %}
     </head>
-    <body>
+    <body class="bg-gray-50 dark:bg-gray-900">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            {% include 'home/navbar.html.twig' %}
+        {% endif %}
+
         {% block body %}{% endblock %}
     </body>
 </html>
