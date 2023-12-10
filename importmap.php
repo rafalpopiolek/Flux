@@ -18,13 +18,25 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
-    '@hotwired/stimulus' => [
-        'version' => '3.2.2',
-    ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
+    '@hotwired/stimulus' => [
+        'version' => '3.2.2',
+    ],
     '@hotwired/turbo' => [
-        'version' => '7.3.0',
+        'version' => '8.0.0-beta.1',
+    ],
+    'flowbite' => [
+        'version' => '2.2.0',
+        'entrypoint' => true,
+    ],
+    '@popperjs/core' => [
+        'version' => '2.11.8',
+        'entrypoint' => true,
+    ],
+    'flowbite/dist/flowbite.min.css' => [
+        'version' => '2.2.0',
+        'type' => 'css',
     ],
 ];
