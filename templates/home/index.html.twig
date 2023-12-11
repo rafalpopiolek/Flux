@@ -1,7 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="md:container md:mx-auto p-5 mt-5 dark:text-white">
-        Home
-    </div>
+    {% embed 'shared/_responsiveContainer.html.twig' %}
+        {% block content %}
+            {% for post in posts %}
+                {% include 'post/_postContainer.html.twig' with {
+                    'user': post.author.firstName ~ ' ' ~ post.author.lastName,
+                    'post': post.content,
+                    'createdAt': post.createdAt,
+                } %}
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

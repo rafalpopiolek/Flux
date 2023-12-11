@@ -75,22 +75,22 @@ class Post
         return $this;
     }
 
-    public function getType(): string
+    public function getType(): Type
     {
         return $this->type;
     }
 
-    public function setType(string $type): void
+    public function setType(Type $type): void
     {
         $this->type = $type;
     }
 
-    public function getStatus(): string
+    public function getStatus(): Status
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(Status $status): void
     {
         $this->status = $status;
     }

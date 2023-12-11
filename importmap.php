@@ -25,15 +25,13 @@ return [
         'version' => '3.2.2',
     ],
     '@hotwired/turbo' => [
-        'version' => '8.0.0-beta.1',
+        'version' => '7.3.0',
     ],
     'flowbite' => [
         'version' => '2.2.0',
-        'entrypoint' => true,
     ],
     '@popperjs/core' => [
         'version' => '2.11.8',
-        'entrypoint' => true,
     ],
     'flowbite/dist/flowbite.min.css' => [
         'version' => '2.2.0',

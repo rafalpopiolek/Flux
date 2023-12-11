@@ -22,4 +22,13 @@ class PostRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Post::class);
     }
+
+    public function getPosts(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->orderBy('p.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }
