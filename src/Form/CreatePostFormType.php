@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Post;
-use App\Enum\Post\Status;
 use App\Enum\Post\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -20,7 +21,7 @@ class CreatePostFormType extends AbstractType
                 'choices' => [
                     Type::PUBLIC->value => Type::PUBLIC,
                     Type::PRIVATE->value => Type::PRIVATE,
-                ]
+                ],
             ]);
     }
 
