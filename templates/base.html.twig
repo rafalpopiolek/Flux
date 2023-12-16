@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" class="dark">
+<html lang="pl" class="">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -16,7 +16,9 @@
             {% include 'home/navbar.html.twig' %}
         {% endif %}
 
-        {% block body %}{% endblock %}
+        <div class="">
+            {% block body %}{% endblock %}
+        </div>
 
         <div id="flash-container">
             {{ include('shared/_flashes.html.twig') }}

@@ -46,4 +46,7 @@ return [
     Knp\Bundle\TimeBundle\KnpTimeBundle::class => [
         'all' => true,
     ],
+    BabDev\PagerfantaBundle\BabDevPagerfantaBundle::class => [
+        'all' => true,
+    ],
 ];
