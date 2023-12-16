@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Enum\Identity\Role;
 use App\Event\UserHasBeenCreatedEvent;
 use App\Form\RegistrationFormType;
+use App\Trait\Form\FormResponseStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends AbstractController
 {
+    use FormResponseStatus;
+
     public function __construct(
         private readonly UserPasswordHasherInterface $userPasswordHasher,
         private readonly EntityManagerInterface $entityManager,
@@ -53,13 +56,8 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $status = match ($form->isSubmitted() && ! $form->isValid()) {
-            true => Response::HTTP_UNPROCESSABLE_ENTITY,
-            default => Response::HTTP_OK,
-        };
-
         return $this->render('auth/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-        ], new Response(null, $status));
+        ], new Response(null, $this->setResponseStatus($form)));
     }
 }
