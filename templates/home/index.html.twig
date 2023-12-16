@@ -1,7 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="md:container md:mx-auto p-5 mt-5 dark:text-white">
-        Home
-    </div>
+    {% embed 'shared/_responsiveContainer.html.twig' %}
+        {% block content %}
+            <div class="flex justify-end">
+                <a href="{{ path('app_post') }}" class="bg-transparent outline outline-1 outline-indigo-500 hover:bg-indigo-500 hover:text-gray-100 dark:text-gray-300 py-2 px-16 rounded-sm hover:rounded-md hover-outline-none">
+                    Add Flux
+                </a>
+            </div>
+        {% endblock %}
+    {% endembed %}
+
+    {% embed 'shared/_responsiveContainer.html.twig' %}
+        {% block content %}
+            {% for post in posts %}
+                {% include 'post/_postContainer.html.twig' with {
+                    'user': post.author.firstName ~ ' ' ~ post.author.lastName,
+                    'post': post.content,
+                    'createdAt': post.createdAt,
+                } %}
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

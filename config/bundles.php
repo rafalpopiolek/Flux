@@ -43,4 +43,7 @@ return [
     Symfony\UX\Turbo\TurboBundle::class => [
         'all' => true,
     ],
+    Knp\Bundle\TimeBundle\KnpTimeBundle::class => [
+        'all' => true,
+    ],
 ];
