@@ -39,6 +39,8 @@ class PostController extends AbstractController
             $this->entityManager->persist($post);
             $this->entityManager->flush();
 
+            $this->addFlash('success', 'Post created successfully!');
+
             return $this->redirectToRoute('app_home');
         }
 
