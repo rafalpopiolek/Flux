@@ -11,7 +11,7 @@ trait FormResponseStatus
 {
     public function setResponseStatus(FormInterface $form): int
     {
-        return match ($form->isSubmitted() && !$form->isValid()) {
+        return match ($form->isSubmitted() && ! $form->isValid()) {
             true => Response::HTTP_UNPROCESSABLE_ENTITY,
             default => Response::HTTP_OK,
         };
