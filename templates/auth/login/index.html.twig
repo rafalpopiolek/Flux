@@ -3,7 +3,7 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-    <div class="max-w-sm mx-auto border p-5 mt-12">
+    <div class="max-w-sm mx-auto border dark:border-gray-700 p-5 mt-12">
         {% if error %}
             <div class="text-red-600 mb-3 font-bold">
                 {{ error.messageKey|trans(error.messageData, 'security') }}

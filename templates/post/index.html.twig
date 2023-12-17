@@ -6,13 +6,17 @@
             <div class="border dark:border-gray-700 p-8">
                 {{ form_start(form) }}
 
-                <div>
+                <div data-controller="character-counter">
                     <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Post
                         content</label>
                     <textarea id="message" rows="4"
                               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              name="{{ field_name(form.content) }}"
+                              name="{{ field_name(form.content) }}" maxlength="500"
+                              data-character-counter-target="input"
                               placeholder="{{ field_label(form.content) }}">{{ field_value(form.content) }}</textarea>
+                    <p class="flex justify-end dark:text-gray-300 mt-2">
+                        <span data-character-counter-target="counter"></span>/500
+                    </p>
                 </div>
 
                 <div class="mt-4">

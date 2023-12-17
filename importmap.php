@@ -37,4 +37,7 @@ return [
         'version' => '2.2.0',
         'type' => 'css',
     ],
+    'stimulus-character-counter' => [
+        'version' => '4.2.0',
+    ],
 ];
