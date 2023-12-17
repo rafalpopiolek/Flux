@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% embed 'shared/_responsiveContainer.html.twig' %}
+        {% block content %}
+            <div class="border dark:border-gray-700 p-8">
+                {{ form_start(form) }}
+
+                <div data-controller="character-counter">
+                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Add
+                        comment</label>
+                    <textarea id="message" rows="4"
+                              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              name="{{ field_name(form.content) }}" minlength="2" maxlength="255"
+                              data-character-counter-target="input"
+                              placeholder="{{ field_label(form.content) }}">{{ field_value(form.content) }}</textarea>
+                    <p class="flex justify-end dark:text-gray-300 mt-2">
+                        <span data-character-counter-target="counter"></span>/500
+                    </p>
+                </div>
+
+                <button type="submit"
+                        class="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Add
+                </button>
+                {{ form_end(form) }}
+            </div>
+
+            {% for comment in comments %}
+                <div class="comment">
+                    <div class="row">
+                        <div class="col-md-10 bg-gray-100 p-3 border">
+                            <div class="flex justify-between bg-gray-50 p-2 border">
+                                <p class="">{{ comment.author.firstName }} {{ comment.author.lastName }}</p>
+                                <p>{{ comment.createdAt|ago }}</p>
+                            </div>
+                            <div class="p-2">
+                                {{ comment.content }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -13,10 +13,7 @@
             <turbo-frame id="post-browse-list-{{ pager.currentPage }}">
                 {% for post in pager %}
                     {% include 'post/_postContainer.html.twig' with {
-                        'id': post.id,
-                        'user': post.author.firstName ~ ' ' ~ post.author.lastName,
-                        'post': post.content,
-                        'createdAt': post.createdAt,
+                        'post': post,
                     } %}
                 {% endfor %}
 
