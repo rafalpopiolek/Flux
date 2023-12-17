@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
 use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
@@ -27,6 +28,7 @@ return static function (ECSConfig $ecsConfig): void {
 
     $ecsConfig->skip([
         PhpdocLineSpanFixer::class,
+        MethodArgumentSpaceFixer::class
     ]);
 
     $ecsConfig->parallel();

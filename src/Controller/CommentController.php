@@ -43,7 +43,9 @@ class CommentController extends AbstractController
 
             $this->addFlash('success', 'Comment created successfully!');
 
-            return $this->redirectToRoute('app_comment', ['postId' => $postId]);
+            return $this->redirectToRoute('app_comment', [
+                'postId' => $postId,
+            ]);
         }
 
         $comments = $this->commentRepository->getPostComments($postId);
