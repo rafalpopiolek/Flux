@@ -26,6 +26,7 @@ class PostRepository extends ServiceEntityRepository
 
     public function createPostListQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('p');
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC');
     }
 }
