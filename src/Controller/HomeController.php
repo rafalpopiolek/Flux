@@ -10,6 +10,7 @@ use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
@@ -20,16 +21,16 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(Request $request): Response
-    {
-        $currentPage = $request->query->getInt('page', 1);
-        $maxPerPage = $request->query->getInt('size', 7);
-
+    public function index(
+        Request $request,
+        #[MapQueryParameter] int $page = 1,
+        #[MapQueryParameter] int $size = 5,
+    ): Response {
         $adapter = new QueryAdapter($this->postRepository->createPostListQueryBuilder());
         $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
             adapter: $adapter,
-            currentPage: $currentPage,
-            maxPerPage: $maxPerPage
+            currentPage: $page,
+            maxPerPage: $size
         );
 
         return $this->render('home/index.html.twig', [

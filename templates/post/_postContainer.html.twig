@@ -4,12 +4,12 @@
             <img src="https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-512x488-rddkk3u9.png"
                  alt="User Profile" class="w-8 h-8 rounded-full mr-2">
             <div>
-                <h2 class="text-lg font-semibold">{{ user }}</h2>
-                <p class="text-gray-500 text-sm">{{ createdAt|ago }}</p>
+                <h2 class="text-lg font-semibold">{{ post.author.firstName ~ ' ' ~ post.author.lastName }}</h2>
+                <p class="text-gray-500 text-sm">{{ post.createdAt|ago }}</p>
             </div>
         </div>
         <div>
-            <button id="dropdownMenuIcon-{{ id }}" data-dropdown-toggle="dropdownDots-{{ id }}"
+            <button id="dropdownMenuIcon-{{ post.id }}" data-dropdown-toggle="dropdownDots-{{ post.id }}"
                     class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                     type="button">
                 <svg height="16" width="4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -18,9 +18,9 @@
                 </svg>
             </button>
 
-            <div id="dropdownDots-{{ id }}"
+            <div id="dropdownDots-{{ post.id }}"
                  class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIcon-{{ id }}">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIcon-{{ post.id }}">
                     <li>
                         <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Report</a>
                     </li>
@@ -37,7 +37,7 @@
 
     <div class="text-gray-800 dark:text-gray-300 leading-relaxed mb-4">
         <p>
-            {{ post }}
+            {{ post.content }}
         </p>
     </div>
 
@@ -50,13 +50,13 @@
             <span>Like</span>
         </button>
 
-        <button class="flex items-center space-x-2 text-gray-500">
+        <a href="{{ path('app_comment', {postId: post.id}) }}" data-turbo-frame="_top" class="flex items-center space-x-2 text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"
                  class="dark:fill-gray-300">
                 <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z"/>
             </svg>
-            <span>Comment</span>
-        </button>
+            <span>Comment ({{ post.comments|length}})</span>
+        </a>
 
         <button class="flex items-center space-x-2 text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"
