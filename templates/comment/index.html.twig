@@ -3,7 +3,7 @@
 {% block body %}
     {% embed 'shared/_responsiveContainer.html.twig' %}
         {% block content %}
-            <div class="border dark:border-gray-700 p-8">
+            <div class="border dark:border-gray-700 p-8 mb-5">
                 {{ form_start(form) }}
 
                 <div data-controller="character-counter">
@@ -27,16 +27,14 @@
             </div>
 
             {% for comment in comments %}
-                <div class="comment">
-                    <div class="row">
-                        <div class="col-md-10 bg-gray-100 p-3 border">
-                            <div class="flex justify-between bg-gray-50 p-2 border">
-                                <p class="">{{ comment.author.firstName }} {{ comment.author.lastName }}</p>
-                                <p>{{ comment.createdAt|ago }}</p>
-                            </div>
-                            <div class="p-2">
-                                {{ comment.content }}
-                            </div>
+                <div class="row my-3">
+                    <div class="col-md-10 bg-gray-100 dark:bg-gray-800 p-3 border dark:border-gray-700 dark:text-gray-200">
+                        <div class="flex justify-between bg-gray-50 dark:bg-gray-700 p-2 border dark:border-gray-600 rounded-lg">
+                            <p class="">{{ comment.author.firstName }} {{ comment.author.lastName }}</p>
+                            <p>{{ comment.createdAt|ago }}</p>
+                        </div>
+                        <div class="p-2">
+                            {{ comment.content }}
                         </div>
                     </div>
                 </div>

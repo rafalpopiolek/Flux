@@ -8,6 +8,7 @@ use App\Enum\Reaction\Target;
 use App\Enum\Reaction\Type;
 use App\Repository\ReactionRepository;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReactionRepository::class)]
@@ -32,7 +33,12 @@ class Reaction
     private ?Target $targetType;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt = null;
+    private DateTimeInterface $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -54,13 +60,6 @@ class Reaction
     public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     public function getType(): ?Type

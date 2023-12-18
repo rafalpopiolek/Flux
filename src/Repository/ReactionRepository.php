@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Reaction;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -23,28 +25,26 @@ class ReactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Reaction::class);
     }
 
-    //    /**
-    //     * @return Reaction[] Returns an array of Reaction objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function save(Reaction $reaction, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($reaction);
 
-    //    public function findOneBySomeField($value): ?Reaction
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findByPostAndAuthor(int $targetId, User $author): ?Reaction
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.targetId = :targetId')
+            ->andWhere('r.author = :author')
+            ->setParameter('targetId', $targetId)
+            ->setParameter('author', $author)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

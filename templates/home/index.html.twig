@@ -11,9 +11,10 @@
             </div>
 
             <turbo-frame id="post-browse-list-{{ pager.currentPage }}">
-                {% for post in pager %}
+                {% for result in pager %}
                     {% include 'post/_postContainer.html.twig' with {
-                        'post': post,
+                        'post': result.post,
+                        'reaction': result.reaction,
                     } %}
                 {% endfor %}
 
@@ -26,7 +27,6 @@
                             the page.</p>
                     </div>
                 {% endif %}
-
             </turbo-frame>
         {% endblock %}
     {% endembed %}

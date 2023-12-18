@@ -27,6 +27,7 @@ class HomeController extends AbstractController
         #[MapQueryParameter] int $size = 5,
     ): Response {
         $adapter = new QueryAdapter($this->postRepository->createPostListQueryBuilder());
+
         $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
             adapter: $adapter,
             currentPage: $page,

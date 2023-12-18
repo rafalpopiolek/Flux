@@ -40,4 +40,7 @@ return [
     'stimulus-character-counter' => [
         'version' => '4.2.0',
     ],
+    'stimulus-popover' => [
+        'version' => '6.2.0',
+    ],
 ];
