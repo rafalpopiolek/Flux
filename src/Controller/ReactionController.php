@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Command\SetReactionToPostCommand;
+use App\Command\RemoveReactionFromTargetCommand;
+use App\Command\SetReactionToTargetCommand;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,18 +21,35 @@ class ReactionController extends AbstractController
     ) {
     }
 
-    #[Route('/reaction/{target}/{targetId}', name: 'app_reaction', methods: ['POST'])]
-    public function index(Request $request, string $target, int $targetId): Response
+    #[Route('/reaction/{target}/{targetId}', name: 'app_set_reaction', methods: ['POST'])]
+    public function setReaction(Request $request, string $target, int $targetId): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
         $this->commandBus->dispatch(
-            new SetReactionToPostCommand(
+            new SetReactionToTargetCommand(
                 authorId: $user->getId(),
                 target: $target,
                 targetId: $targetId,
                 reactionType: $request->getPayload()->get('type')
+            )
+        );
+
+        return new JsonResponse();
+    }
+
+    #[Route('/reaction/remove/{target}/{targetId}', name: 'app_remove_reaction', methods: ['POST'])]
+    public function removeReaction(string $target, int $targetId): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $this->commandBus->dispatch(
+            new RemoveReactionFromTargetCommand(
+                authorId: $user->getId(),
+                target: $target,
+                targetId: $targetId
             )
         );
 

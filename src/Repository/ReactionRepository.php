@@ -34,14 +34,22 @@ class ReactionRepository extends ServiceEntityRepository
         }
     }
 
+    public function remove(Reaction $reaction): void
+    {
+        $this->getEntityManager()->remove($reaction);
+        $this->getEntityManager()->flush();
+    }
+
     /**
      * @throws NonUniqueResultException
      */
-    public function findByPostAndAuthor(int $targetId, User $author): ?Reaction
+    public function findByTargetAndAuthor(string $targetType, int $targetId, User $author): ?Reaction
     {
         return $this->createQueryBuilder('r')
+            ->andWhere('r.targetType = :targetType')
             ->andWhere('r.targetId = :targetId')
             ->andWhere('r.author = :author')
+            ->setParameter('targetType', $targetType)
             ->setParameter('targetId', $targetId)
             ->setParameter('author', $author)
             ->getQuery()

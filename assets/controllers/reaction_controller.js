@@ -3,23 +3,25 @@ import {Controller} from '@hotwired/stimulus';
 export default class extends Controller {
 
     static values = {
-        postId: Number,
+        id: Number,
+        target: String,
     }
 
     reactionTypes = {
-        'like': '&#128077',
-        'dislike': '&#128078',
-        'love': '&#128150',
-        'laugh': '&#128514',
-        'sad': '&#128549',
+        'default': '&#x1F44D;&#x1F3FB;',
+        'like': '&#128077;',
+        'dislike': '&#128078;',
+        'love': '&#128150;',
+        'laugh': '&#128514;',
+        'sad': '&#128549;',
     }
 
     setReaction(event) {
-        const defaultReaction = document.querySelector(`#defaultReaction-${this.postIdValue}`)
-        const defaultReactionType = document.querySelector(`#defaultReactionType-${this.postIdValue}`)
+        const defaultReaction = document.querySelector(`#defaultReaction-${this.idValue}`)
+        const defaultReactionType = document.querySelector(`#defaultReactionType-${this.idValue}`)
         const userReaction = event.target.getAttribute('data-type')
 
-        fetch(`/reaction/posts/${this.postIdValue}`, {
+        fetch(`/reaction/${this.targetValue}/${this.idValue}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,5 +34,19 @@ export default class extends Controller {
 
         defaultReaction.innerHTML = this.reactionTypes[userReaction]
         defaultReactionType.innerHTML = userReaction
+    }
+
+    removeReaction() {
+        const defaultReactionContainer = document.querySelector(`#defaultReactionContainer-${this.idValue}`)
+        const defaultReaction = document.querySelector(`#defaultReaction-${this.idValue}`)
+        const defaultReactionType = document.querySelector(`#defaultReactionType-${this.idValue}`)
+        const userReaction = defaultReactionContainer.getAttribute('data-type')
+
+        fetch(`/reaction/remove/${this.targetValue}/${this.idValue}`, {
+            method: 'POST',
+        })
+
+        defaultReaction.innerHTML = this.reactionTypes[userReaction]
+        defaultReactionType.innerHTML = 'like'
     }
 }

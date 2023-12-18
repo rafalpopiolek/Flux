@@ -19,7 +19,8 @@ framework:
 
         routing:
             'App\Event\UserHasBeenCreatedEvent': async
-            'App\Command\SetReactionToPostCommand': async
+            'App\Command\SetReactionToTargetCommand': async
+            'App\Command\RemoveReactionFromTargetCommand': async
 
 # when@test:
 #    framework:

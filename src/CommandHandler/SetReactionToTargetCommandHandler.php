@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\CommandHandler;
 
-use App\Command\SetReactionToPostCommand;
+use App\Command\SetReactionToTargetCommand;
 use App\Entity\Reaction;
 use App\Entity\User;
 use App\Enum\Reaction\Target;
@@ -15,7 +15,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class SetReactionToPostCommandHandler
+final readonly class SetReactionToTargetCommandHandler
 {
     public function __construct(
         private ReactionRepository $reactionRepository,
@@ -26,7 +26,7 @@ final readonly class SetReactionToPostCommandHandler
     /**
      * @throws NonUniqueResultException
      */
-    public function __invoke(SetReactionToPostCommand $command): void
+    public function __invoke(SetReactionToTargetCommand $command): void
     {
         /** @var User $author */
         $author = $this->userRepository->find($command->authorId);
@@ -44,7 +44,11 @@ final readonly class SetReactionToPostCommandHandler
             'sad' => Type::SAD,
         };
 
-        $oldReaction = $this->reactionRepository->findByPostAndAuthor($command->targetId, $author);
+        $oldReaction = $this->reactionRepository->findByTargetAndAuthor(
+            $targetEnum->value,
+            $command->targetId,
+            $author
+        );
 
         if ($oldReaction === null) {
             $reaction = new Reaction();
