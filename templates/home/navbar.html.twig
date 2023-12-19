@@ -16,16 +16,24 @@
             </button>
 
             <!-- Dropdown menu -->
-            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-md shadow dark:bg-gray-700 dark:divide-gray-600"
                  id="user-dropdown">
                 <div class="px-4 py-3">
                     <span class="block text-sm text-gray-900 dark:text-white">User Name</span>
                     <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">user@email.com</span>
                 </div>
-                <ul class="py-2" aria-labelledby="user-menu-button">
+                <ul class="" aria-labelledby="user-menu-button">
+                    <li>
+                        <a href="{{ path('app_profile') }}"
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                            Profile
+                        </a>
+                    </li>
                     <li>
                         <a href="#"
-                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                            Settings
+                        </a>
                     </li>
                     <li>
                         <a href="{{ path('app_logout') }}"
@@ -54,7 +62,8 @@
                         <label for="simple-search" class="sr-only">Search</label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="h-5 w-5 fill-black dark:fill-gray-400" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                                <svg class="h-5 w-5 fill-black dark:fill-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                     x="0px" y="0px"
                                      width="30"
                                      height="30" viewBox="0 0 30 30">
                                     <path d="M 13 3 C 7.4889971 3 3 7.4889971 3 13 C 3 18.511003 7.4889971  23 13 23 C 15.396508 23 17.597385 22.148986 19.322266 20.736328 L 25.292969 26.707031 A 1.0001 1.0001 0 1 0 26.707031 25.292969 L 20.736328 19.322266 C 22.148986 17.597385 23 15.396508 23 13 C 23 7.4889971 18.511003 3 13 3 z M 13 5 C 17.430123 5 21 8.5698774 21 13 C 21 17.430123 17.430123 21 13 21 C 8.5698774 21 5 17.430123 5 13 C 5 8.5698774 8.5698774 5 13 5 z">
