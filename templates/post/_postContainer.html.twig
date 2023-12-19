@@ -1,12 +1,3 @@
-{% set reactionEmojis = {
-    'default': '&#x1F44D;&#x1F3FB;',
-    'like': '&#128077;',
-    'dislike': '&#128078;',
-    'love': '&#128150;',
-    'laugh': '&#128514;',
-    'sad': '&#128549;',
-} %}
-
 <div class="bg-white dark:bg-gray-800 pt-4 pb-2 px-6 border-b-2 border-b-gray-200 dark:border-b-gray-700 w-full md:my-5">
     <div class="flex justify-between items-center mb-4">
         <div class="flex dark:text-gray-300">
@@ -52,67 +43,13 @@
         </p>
     </div>
 
-    <div
-            data-controller="reaction"
-            data-reaction-id-value="{{ post.id }}"
-            data-reaction-target-value="posts"
-            class="flex justify-between space-x-4 pt-4 pb-2 px-5 border-t dark:border-gray-700"
-    >
-        <div
-                data-controller="popover"
-                data-action="mouseenter->popover#show mouseleave->popover#hide"
-                class="relative"
-        >
-            <button
-                    id="defaultReactionContainer-{{ post.id }}"
-                    data-type="default"
-                    data-action="reaction#removeReaction"
-                    class="flex items-center space-x-2 text-gray-500 cursor-pointer"
-            >
-                    <span id="defaultReaction-{{ post.id }}">
-                    {% if reaction %}
-                        {{ reactionEmojis[reaction.value]|raw }}
-                    {% else %}
-                        &#x1F44D;&#x1F3FB;
-                    {% endif %}
-                </span>
+    <div class="flex justify-between space-x-4 pt-4 pb-2 px-5 border-t dark:border-gray-700">
 
-                <span id="defaultReactionType-{{ post.id }}">
-                    {% if reaction %}
-                        {{ reaction.value }}
-                    {% else %}
-                        Like
-                    {% endif %}
-                </span>
-            </button>
-
-            <template data-popover-target="content">
-                <div data-popover-target="card"
-                     class="rounded-lg shadow-lg bg-gray-100 dark:bg-gray-700 absolute left-0 bottom-6"
-                >
-                    <div
-                            id="content"
-                            class="flex gap-3 items-center p-3 text-2xl"
-                    >
-                        <p class="cursor-pointer" data-type="like" data-action="click->reaction#setReaction">
-                            &#128077
-                        </p>
-                        <p class="cursor-pointer" data-type="dislike" data-action="click->reaction#setReaction">
-                            &#128078
-                        </p>
-                        <p class="cursor-pointer" data-type="love" data-action="click->reaction#setReaction">
-                            &#128150
-                        </p>
-                        <p class="cursor-pointer" data-type="laugh" data-action="click->reaction#setReaction">
-                            &#128514
-                        </p>
-                        <p class="cursor-pointer" data-type="sad" data-action="click->reaction#setReaction">
-                            &#128549
-                        </p>
-                    </div>
-                </div>
-            </template>
-        </div>
+        {% include 'reaction/_reactionChoice.html.twig' with {
+            'id': post.id,
+            'target': 'posts',
+            'reaction': reaction,
+        } %}
 
         <a href="{{ path('app_comment', {postId: post.id}) }}" data-turbo-frame="_top"
            class="flex items-center space-x-2 text-gray-500">

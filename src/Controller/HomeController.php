@@ -22,7 +22,6 @@ class HomeController extends AbstractController
 
     #[Route('/', name: 'app_home')]
     public function index(
-        Request $request,
         #[MapQueryParameter] int $page = 1,
         #[MapQueryParameter] int $size = 5,
     ): Response {

@@ -26,15 +26,24 @@
                 {{ form_end(form) }}
             </div>
 
-            {% for comment in comments %}
+            {% for result in comments %}
                 <div class="row my-3">
                     <div class="col-md-10 bg-gray-100 dark:bg-gray-800 p-3 border dark:border-gray-700 dark:text-gray-200">
                         <div class="flex justify-between bg-gray-50 dark:bg-gray-700 p-2 border dark:border-gray-600 rounded-lg">
-                            <p class="">{{ comment.author.firstName }} {{ comment.author.lastName }}</p>
-                            <p>{{ comment.createdAt|ago }}</p>
+                            <div>
+                                <span class="">{{ result.comment.author.firstName }} {{ result.comment.author.lastName }}</span>
+                                <span class="text-gray-400 ml-1 text-sm">({{ result.comment.createdAt|ago }})</span>
+                            </div>
+                            <div>
+                                {% include 'reaction/_reactionChoice.html.twig' with {
+                                    'id': result.comment.id,
+                                    'target': 'comments',
+                                    'reaction': result.reaction,
+                                } %}
+                            </div>
                         </div>
-                        <div class="p-2">
-                            {{ comment.content }}
+                        <div class="py-4 px-2">
+                            {{ result.comment.content }}
                         </div>
                     </div>
                 </div>
