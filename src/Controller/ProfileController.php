@@ -19,14 +19,18 @@ class ProfileController extends AbstractController
     ) {
     }
 
-    #[Route('/profile', name: 'app_profile')]
-    public function show(): Response
+    #[Route('/profile/{user}', name: 'app_profile', requirements: [
+        'user' => '\d+',
+    ])]
+    public function show(User $user): Response
     {
-        return $this->render('profile/index.html.twig');
+        return $this->render('profile/index.html.twig', [
+            'user' => $user,
+        ]);
     }
 
-    #[Route('/profile/create', name: 'app_profile_create')]
-    public function createProfile(Request $request): Response
+    #[Route('/profile/update', name: 'app_profile_update')]
+    public function updateProfile(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -39,7 +43,10 @@ class ProfileController extends AbstractController
             $this->profileRepository->save($profile);
 
             $this->addFlash('success', 'Profile updated!');
-            return $this->redirectToRoute('app_profile');
+
+            return $this->redirectToRoute('app_profile', [
+                'user' => $user->getId(),
+            ]);
         }
 
         return $this->render('profile/createProfileForm.html.twig', [
