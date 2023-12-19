@@ -6,7 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -24,9 +24,15 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    public function createPostListQueryBuilder(): QueryBuilder
+    public function createPostListQueryBuilder(): Query
     {
-        return $this->createQueryBuilder('p')
-            ->orderBy('p.createdAt', 'DESC');
+        $sql = '
+            SELECT p as post, r.type as reaction
+            FROM App\Entity\Post p
+            LEFT JOIN App\Entity\Reaction r WITH p.id = r.targetId AND r.targetType = :targetType
+            ORDER BY p.createdAt DESC
+        ';
+
+        return $this->getEntityManager()->createQuery($sql)->setParameter('targetType', 'post');
     }
 }

@@ -1,0 +1,69 @@
+{% set reactionEmojis = {
+    'default': '&#x1F44D;&#x1F3FB;',
+    'like': '&#128077;',
+    'dislike': '&#128078;',
+    'love': '&#128150;',
+    'laugh': '&#128514;',
+    'sad': '&#128549;',
+} %}
+
+<div
+        data-controller="reaction"
+        data-reaction-id-value="{{ id }}"
+        data-reaction-target-value="{{ target }}"
+>
+    <div
+            data-controller="popover"
+            data-action="mouseenter->popover#show mouseleave->popover#hide"
+            class="relative"
+    >
+        <button
+                id="defaultReactionContainer-{{ id }}"
+                data-type="default"
+                data-action="reaction#removeReaction"
+                class="flex items-center space-x-2 text-gray-500 cursor-pointer"
+        >
+                        <span id="defaultReaction-{{ id }}">
+                        {% if reaction %}
+                            {{ reactionEmojis[reaction.value]|raw }}
+                        {% else %}
+                            &#x1F44D;&#x1F3FB;
+                        {% endif %}
+                    </span>
+            <span id="defaultReactionType-{{ id }}">
+                        {% if reaction %}
+                            {{ reaction.value }}
+                        {% else %}
+                            like
+                        {% endif %}
+                    </span>
+        </button>
+
+        <template data-popover-target="content">
+            <div data-popover-target="card"
+                 class="rounded-lg shadow-lg bg-gray-100 dark:bg-gray-700 absolute left-0 bottom-6"
+            >
+                <div
+                        id="content"
+                        class="flex gap-3 items-center p-3 text-2xl"
+                >
+                    <p class="cursor-pointer" data-type="like" data-action="click->reaction#setReaction">
+                        &#128077
+                    </p>
+                    <p class="cursor-pointer" data-type="dislike" data-action="click->reaction#setReaction">
+                        &#128078
+                    </p>
+                    <p class="cursor-pointer" data-type="love" data-action="click->reaction#setReaction">
+                        &#128150
+                    </p>
+                    <p class="cursor-pointer" data-type="laugh" data-action="click->reaction#setReaction">
+                        &#128514
+                    </p>
+                    <p class="cursor-pointer" data-type="sad" data-action="click->reaction#setReaction">
+                        &#128549
+                    </p>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>
