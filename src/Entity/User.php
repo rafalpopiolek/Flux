@@ -44,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Profile::class, cascade: ['persist', 'remove'])]
+    private Profile $profile;
+
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, cascade: ['remove'])]
     private Collection $posts;
 
@@ -160,5 +163,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    public function getProfile(): Profile
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(Profile $profile): static
+    {
+        if ($this !== $profile->getUser()) {
+            $profile->setUser($this);
+        }
+        $this->profile = $profile;
+
+        return $this;
     }
 }

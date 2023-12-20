@@ -1,0 +1,31 @@
+<div class="dark:bg-gray-900 border dark:border-gray-900 p-5 rounded-lg">
+    <div class="flex items-center justify-between space-x-4 dark:text-gray-300">
+        <div class="flex items-center space-x-4">
+            <div class="mb-4">
+                <h1 class="text-xl font-bold">
+                    {{ user.firstName ~ ' ' ~ user.lastName }}
+                </h1>
+                <p class="text-gray-500">{{ user.email }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="mb-4 dark:text-gray-300">
+        {% if user.profile.age %}
+            <p class="mt-1">
+                <span class="font-bold">Age: </span>
+                {{ user.profile.age }}
+            </p>
+        {% endif %}
+
+        <p class="mt-1">
+            <span class="font-bold">Joined: </span>
+            <span class="text-gray-400 text-sm">({{ user.createdAt|ago }})</span>
+        </p>
+
+        <p class="mt-1"><span class="font-bold">Posts:</span> 312</p>
+        <p><span class="font-bold">Comments:</span> 117</p>
+    </div>
+    <div class="flex justify-end mt-1 text-blue-500">
+        <a data-turbo-frame="_top" href="{{ path('app_profile', {user: user.id}) }}">More</a>
+    </div>
+</div>

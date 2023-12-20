@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Auth;
 
+use App\Entity\Profile;
 use App\Entity\User;
 use App\Enum\Identity\Role;
 use App\Event\UserHasBeenCreatedEvent;
@@ -45,6 +46,8 @@ class RegistrationController extends AbstractController
             $user->setRoles([
                 Role::USER->value,
             ]);
+
+            $user->setProfile(new Profile());
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
