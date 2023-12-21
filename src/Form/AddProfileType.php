@@ -8,6 +8,7 @@ use App\Entity\Profile;
 use App\Enum\Identity\Gender;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,7 +28,12 @@ class AddProfileType extends AbstractType
                     ucfirst(Gender::OTHER->value) => Gender::OTHER,
                 ],
             ])
-            ->add('bio');
+            ->add('bio')
+            ->add('profilePicture', FileType::class, [
+                'label' => 'Profile picture (JPG or PNG file)',
+                'mapped' => false,
+                'required' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

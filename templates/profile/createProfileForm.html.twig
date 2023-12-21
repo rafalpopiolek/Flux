@@ -11,7 +11,7 @@
                 <div class="mt-4">
                     <label for="number-input"
                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Age</label>
-                    <input type="number" min="0" step="1"
+                    <input type="number" min="0" step="1" id="number-input"
                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            name="{{ field_name(form.age) }}"
                            value="{{ field_value(form.age) }}"
@@ -30,7 +30,11 @@
                     {{ form_row(form.gender) }}
                 </div>
 
-                <div data-controller="character-counter">
+                <div class="mt-4">
+                    {{ form_row(form.profilePicture) }}
+                </div>
+
+                <div data-controller="character-counter" class="mt-4">
                     <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Bio
                     </label>

@@ -8,14 +8,18 @@ use App\Entity\User;
 use App\Form\AddProfileType;
 use App\Repository\ProfileRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProfileController extends AbstractController
 {
     public function __construct(
-        private readonly ProfileRepository $profileRepository
+        private readonly ProfileRepository $profileRepository,
+        private readonly SluggerInterface $slugger,
     ) {
     }
 
@@ -40,6 +44,26 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $profilePicture */
+            $profilePicture = $form->get('profilePicture')->getData();
+
+            if ($profilePicture) {
+                $originalName = pathinfo($profilePicture->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $this->slugger->slug($originalName);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $profilePicture->guessExtension();
+
+                try {
+                    $profilePicture->move(
+                        directory: $this->getParameter('user_storage'),
+                        name: $newFilename
+                    );
+                } catch (FileException) {
+                    $this->addFlash('error', 'Something went wrong while uploading your profile picture!');
+                }
+
+                $profile->setProfilePicture($newFilename);
+            }
+
             $this->profileRepository->save($profile);
 
             $this->addFlash('success', 'Profile updated!');

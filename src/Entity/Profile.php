@@ -20,6 +20,9 @@ class Profile
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $profilePicture;
+
     #[ORM\Column(type: 'string', nullable: true, enumType: Gender::class)]
     private ?Gender $gender = null;
 
@@ -108,5 +111,15 @@ class Profile
     public function setUser(?User $user): void
     {
         $this->user = $user;
+    }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): void
+    {
+        $this->profilePicture = $profilePicture;
     }
 }
