@@ -10,9 +10,16 @@
                     id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
                     data-dropdown-placement="bottom">
                 <span class="sr-only">Open user menu</span>
-                <img class="w-8 h-8 rounded-full"
-                     src="https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-512x488-rddkk3u9.png"
-                     alt="user photo">
+
+                {% if app.user.profile.profilePicture %}
+                    <img class="w-8 h-8 rounded-full"
+                         src="{{ asset('files/users/' ~ app.user.profile.profilePicture) }}"
+                         alt="User avatar">
+                {% else %}
+                    <img class="w-8 h-8 rounded-full"
+                         src="https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-512x488-rddkk3u9.png"
+                         alt="User avatar">
+                {% endif %}
             </button>
 
             <!-- Dropdown menu -->
