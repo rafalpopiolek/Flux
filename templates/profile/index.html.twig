@@ -7,9 +7,9 @@
                 <div class="flex items-center justify-between space-x-4 dark:text-gray-300">
                     <div class="flex items-center space-x-4">
                         <div class="my-4">
-                            {% if app.user.profile.profilePicture %}
+                            {% if user.profile.profilePicture %}
                                 <img class="w-16 h-16 rounded-full"
-                                     src="{{ asset('files/users/' ~ app.user.profile.profilePicture) }}"
+                                     src="{{ asset('files/users/' ~ user.profile.profilePicture) }}"
                                      alt="User avatar">
                             {% else %}
                                 <img class="w-16 h-16 rounded-full"
