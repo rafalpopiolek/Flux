@@ -1,4 +1,4 @@
-<div class="dark:bg-gray-900 border dark:border-gray-900 p-5 rounded-lg">
+ <div class="dark:bg-gray-900 border dark:border-gray-900 py-3 px-5 rounded-lg">
     <div class="flex items-center justify-between space-x-4 dark:text-gray-300">
         <div class="flex items-center space-x-4">
             <div class="mb-4">
@@ -17,15 +17,21 @@
             </p>
         {% endif %}
 
-        <p class="mt-1">
+        <div class="mt-1">
             <span class="font-bold">Joined: </span>
             <span class="text-gray-400 text-sm">({{ user.createdAt|ago }})</span>
-        </p>
+        </div>
 
         <p class="mt-1"><span class="font-bold">Posts:</span> 312</p>
         <p><span class="font-bold">Comments:</span> 117</p>
     </div>
-    <div class="flex justify-end mt-1 text-blue-500">
-        <a data-turbo-frame="_top" href="{{ path('app_profile', {user: user.id}) }}">More</a>
+    <div class="flex justify-between mt-1 text-blue-500 space-x-2">
+        <a
+                class="bg-transparent hover:bg-indigo-500 text-indigo-500 p-2 hover:text-white dark:hover:text-gray-300 font-semibold border border-indigo-500 hover:border-transparent rounded"
+                data-turbo-frame="_top" href="{{ path('app_profile', {user: user.id}) }}">
+            More
+        </a>
+
+        {% include 'profile/_followButton.html.twig' with {'targetUser': user} %}
     </div>
-</div>
+ </div>

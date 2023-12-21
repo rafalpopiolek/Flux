@@ -24,15 +24,21 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    public function createPostListQueryBuilder(): Query
+    public function createPostListQueryBuilder(int $userId): Query
     {
         $sql = '
             SELECT p as post, r.type as reaction
             FROM App\Entity\Post p
-            LEFT JOIN App\Entity\Reaction r WITH p.id = r.targetId AND r.targetType = :targetType
+            LEFT JOIN App\Entity\Reaction r WITH p.id = r.targetId AND r.targetType = :targetType AND r.author = :userId
             ORDER BY p.createdAt DESC
         ';
 
-        return $this->getEntityManager()->createQuery($sql)->setParameter('targetType', 'post');
+        return $this
+            ->getEntityManager()
+            ->createQuery($sql)
+            ->setParameters([
+                'targetType' => 'post',
+                'userId' => $userId,
+            ]);
     }
 }
