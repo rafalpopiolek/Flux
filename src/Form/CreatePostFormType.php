@@ -19,8 +19,9 @@ class CreatePostFormType extends AbstractType
             ->add('content')
             ->add('type', ChoiceType::class, [
                 'choices' => [
-                    ucfirst(Type::PUBLIC->value) => Type::PUBLIC,
-                    ucfirst(Type::PRIVATE->value) => Type::PRIVATE,
+                    'Public' => Type::PUBLIC,
+                    'Only for followers' => Type::FOLLOWERS,
+                    'Private' => Type::PRIVATE,
                 ],
             ]);
     }
