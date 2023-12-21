@@ -25,17 +25,24 @@
                         </div>
                     </div>
 
-                    {% if user.id == app.user.id %}
-                        <a href="{{ path('app_profile_update') }}">
-                            <button class="bg-transparent hover:bg-indigo-500 text-indigo-500 hover:text-white dark:hover:text-gray-300 font-semibold py-2 px-4 border border-indigo-500 hover:border-transparent rounded">
-                                Edit Profile
-                            </button>
-                        </a>
-                    {% else %}
-                        {% include 'profile/_followButton.html.twig' with {'targetUser': user} %}
-                    {% endif %}
+                    <div>
+                        {% if user.id == app.user.id %}
+                            <a href="{{ path('app_profile_update') }}">
+                                <button class="bg-transparent hover:bg-indigo-500 text-indigo-500 hover:text-white dark:hover:text-gray-300 font-semibold py-2 px-4 border border-indigo-500 hover:border-transparent rounded">
+                                    Edit Profile
+                                </button>
+                            </a>
+                        {% else %}
+                            {% include 'profile/_followButton.html.twig' with {'targetUser': user} %}
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="mb-4 dark:text-gray-300">
+                    <div class="space-x-3 mb-2">
+                        <strong class="dark:text-gray-200 text-sm">Following: {{ user.follows|length }}</strong>
+                        <strong class="dark:text-gray-200 text-sm">Followers: {{ user.followers|length }}</strong>
+                    </div>
+
                     {% if user.profile.age %}
                         <p class="mt-1">
                             <span class="font-bold">Age: </span>

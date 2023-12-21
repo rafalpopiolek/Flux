@@ -22,8 +22,8 @@
             <span class="text-gray-400 text-sm">({{ user.createdAt|ago }})</span>
         </div>
 
-        <p class="mt-1"><span class="font-bold">Posts:</span> 312</p>
-        <p><span class="font-bold">Comments:</span> 117</p>
+        <p class="mt-1"><span class="font-bold">Posts:</span> {{ user.posts|length }}</p>
+        <p class="mt-1"><span class="font-bold">Comments:</span> {{ user.comments|length }}</p>
     </div>
     <div class="flex justify-between mt-1 text-blue-500 space-x-2">
         <a
