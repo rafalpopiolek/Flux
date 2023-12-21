@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\User;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
@@ -48,7 +49,9 @@ class CommentController extends AbstractController
             ]);
         }
 
-        $comments = $this->commentRepository->getPostComments($postId);
+        /** @var User $user */
+        $user = $this->getUser();
+        $comments = $this->commentRepository->getPostComments($postId, $user->getId());
 
         return $this->render('comment/index.html.twig', [
             'form' => $form->createView(),

@@ -23,12 +23,12 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function getPostComments(int $postId): array
+    public function getPostComments(int $postId, $userId): array
     {
         $sql = '
             SELECT c as comment, r.type as reaction
             FROM App\Entity\Comment c
-            LEFT JOIN App\Entity\Reaction r WITH c.id = r.targetId AND r.targetType = :targetType
+            LEFT JOIN App\Entity\Reaction r WITH c.id = r.targetId AND r.targetType = :targetType AND r.author = :userId
             WHERE c.post = :postId
             ORDER BY c.createdAt DESC
         ';
@@ -36,8 +36,11 @@ class CommentRepository extends ServiceEntityRepository
         return $this
             ->getEntityManager()
             ->createQuery($sql)
-            ->setParameter('targetType', 'comment')
-            ->setParameter('postId', $postId)
+            ->setParameters([
+                'targetType' => 'comment',
+                'postId' => $postId,
+                'userId' => $userId,
+            ])
             ->getResult();
     }
 }
