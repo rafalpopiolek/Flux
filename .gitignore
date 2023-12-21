@@ -21,4 +21,4 @@
 /assets/vendor
 ###< symfony/asset-mapper ###
 
-/assets/files
+/public/files
