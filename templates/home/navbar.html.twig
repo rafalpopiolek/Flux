@@ -12,7 +12,7 @@
                 <span class="sr-only">Open user menu</span>
 
                 {% if app.user.profile.profilePicture %}
-                    <img class="h-8 rounded-full"
+                    <img class="w-10 h-10 rounded-full"
                          src="{{ asset('files/users/' ~ app.user.profile.profilePicture) }}"
                          alt="User avatar">
                 {% else %}
