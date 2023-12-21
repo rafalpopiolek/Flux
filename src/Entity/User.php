@@ -47,6 +47,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Profile::class, cascade: ['persist', 'remove'])]
     private Profile $profile;
 
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'followers')]
+    #[ORM\JoinTable(name: 'followers')]
+    private Collection $follows;
+
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'follows')]
+    private Collection $followers;
+
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, cascade: ['remove'])]
     private Collection $posts;
 
@@ -56,6 +63,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
+        $this->follows = new ArrayCollection();
+        $this->followers = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
@@ -146,6 +155,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
@@ -178,5 +192,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->profile = $profile;
 
         return $this;
+    }
+
+    public function getFollows(): Collection
+    {
+        return $this->follows;
+    }
+
+    public function follow(self $user): static
+    {
+        if (! $this->follows->contains($user)) {
+            $this->follows[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function unfollow(self $user): static
+    {
+        $this->follows->removeElement($user);
+
+        return $this;
+    }
+
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
     }
 }

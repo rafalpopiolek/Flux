@@ -1,0 +1,15 @@
+{% if app.user.id != targetUser.id %}
+    {% if not app.user.follows.contains(targetUser) %}
+        <a href="{{ path('app_follow_user', {userToFollow: targetUser.id}) }}">
+            <button class="bg-transparent hover:bg-indigo-500 text-indigo-500 p-2 hover:text-white dark:hover:text-gray-300 font-semibold border border-indigo-500 hover:border-transparent rounded">
+                Follow
+            </button>
+        </a>
+    {% else %}
+        <a href="{{ path('app_unfollow_user', {userToUnfollow: targetUser.id}) }}">
+            <button class="bg-transparent hover:bg-indigo-500 text-indigo-500 p-2 hover:text-white dark:hover:text-gray-300 font-semibold border border-indigo-500 hover:border-transparent rounded">
+                Unfollow
+            </button>
+        </a>
+    {% endif %}
+{% endif %}

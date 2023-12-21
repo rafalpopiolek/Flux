@@ -23,6 +23,8 @@
                                 Edit Profile
                             </button>
                         </a>
+                    {% else %}
+                        {% include 'profile/_followButton.html.twig' with {'targetUser': user} %}
                     {% endif %}
                 </div>
                 <div class="mb-4 dark:text-gray-300">
@@ -64,8 +66,8 @@
                         </p>
                     {% endif %}
 
-                    <p class="mt-1"><span class="font-bold">Posts:</span> 312</p>
-                    <p class="mt-1"><span class="font-bold">Comments:</span> 117</p>
+                    <p class="mt-1"><span class="font-bold">Posts:</span> {{ user.posts|length }}</p>
+                    <p class="mt-1"><span class="font-bold">Comments:</span> {{ user.comments|length }}</p>
                 </div>
 
                 {% if user.profile.bio %}

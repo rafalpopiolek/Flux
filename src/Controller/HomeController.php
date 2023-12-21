@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\PostRepository;
 use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -24,7 +25,10 @@ class HomeController extends AbstractController
         #[MapQueryParameter] int $page = 1,
         #[MapQueryParameter] int $size = 5,
     ): Response {
-        $adapter = new QueryAdapter($this->postRepository->createPostListQueryBuilder());
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $adapter = new QueryAdapter($this->postRepository->createPostListQueryBuilder($user->getId()));
 
         $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
             adapter: $adapter,

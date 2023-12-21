@@ -55,4 +55,16 @@ class ReactionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findReactionForTarget(string $targetType, int $targetId): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.type')
+            ->andWhere('r.targetType = :targetType')
+            ->andWhere('r.targetId = :targetId')
+            ->setParameter('targetType', $targetType)
+            ->setParameter('targetId', $targetId)
+            ->getQuery()
+            ->getResult();
+    }
 }
