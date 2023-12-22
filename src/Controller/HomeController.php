@@ -28,7 +28,7 @@ class HomeController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $adapter = new QueryAdapter($this->postRepository->createPostListQueryBuilder($user->getId()));
+        $adapter = new QueryAdapter($this->postRepository->createPostListQueryBuilder($user));
 
         $pagerFanta = Pagerfanta::createForCurrentPageWithMaxPerPage(
             adapter: $adapter,
