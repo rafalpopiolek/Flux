@@ -94,4 +94,12 @@
             </div>
         {% endblock %}
     {% endembed %}
+
+    {% embed 'shared/_responsiveContainer.html.twig' %}
+        {% block content %}
+            {% include 'post/_postListPaginated.html.twig' with {
+                'pager': pager
+            } %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

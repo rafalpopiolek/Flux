@@ -41,4 +41,23 @@ class PostRepository extends ServiceEntityRepository
                 'userId' => $userId,
             ]);
     }
+
+    public function createPostListForUserQueryBuilder(?int $userId): Query
+    {
+        $sql = '
+            SELECT p as post, r.type as reaction
+            FROM App\Entity\Post p
+            LEFT JOIN App\Entity\Reaction r WITH p.id = r.targetId AND r.targetType = :targetType AND r.author = :userId
+            WHERE p.author = :userId
+            ORDER BY p.createdAt DESC
+        ';
+
+        return $this
+            ->getEntityManager()
+            ->createQuery($sql)
+            ->setParameters([
+                'targetType' => 'post',
+                'userId' => $userId,
+            ]);
+    }
 }
