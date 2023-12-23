@@ -1,5 +1,6 @@
 parameters:
     user_storage: '%kernel.project_dir%/public/files/users'
+    media_storage: '%kernel.project_dir%/public/files/media'
 
 services:
     _defaults:

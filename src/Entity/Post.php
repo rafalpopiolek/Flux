@@ -45,11 +45,15 @@ class Post
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Media::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $media;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTime();
         $this->comments = new ArrayCollection();
+        $this->media = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +146,32 @@ class Post
             // set the owning side to null (unless already changed)
             if ($comment->getPost() === $this) {
                 $comment->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedia(Media $media): static
+    {
+        if (! $this->media->contains($media)) {
+            $this->media->add($media);
+            $media->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): static
+    {
+        if ($this->media->removeElement($media)) {
+            if ($media->getPost() === $this) {
+                $media->setPost(null);
             }
         }
 

@@ -8,6 +8,7 @@ use App\Entity\Post;
 use App\Enum\Post\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,7 +24,14 @@ class CreatePostFormType extends AbstractType
                     'Only for followers' => Type::FOLLOWERS,
                     'Private' => Type::PRIVATE,
                 ],
-            ]);
+            ])
+            ->add('media', FileType::class, [
+                'label' => 'Attach files or photos',
+                'mapped' => false,
+                'required' => false,
+                'multiple' => true,
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
