@@ -1,0 +1,51 @@
+<div{{ attributes }}>
+    <div class="w-full bg-gray-200 shadow dark:bg-gray-700 border border-gray-300 dark:border-gray-700">
+        <div class="flex items-center justify-between border-b dark:border-gray-600 p-3">
+            <label for="default-user-search"></label>
+            <input type="search" id="default-user-search"
+                   placeholder="Search Users"
+                   data-model="query"
+                   autofocus
+                   data-turbo-frame="_top"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-96 ps-10 p-2.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-0"
+            >
+        </div>
+        <!-- Modal body -->
+        <div class="space-y-4">
+            {% if computed.users|length > 0 %}
+                <div class="overflow-x-auto shadow-md">
+                    <ul class="divide-y divide-gray-300 dark:divide-gray-600">
+                        {% for user in computed.users %}
+                            <li class="p-3">
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                                    <div class="flex-shrink-0">
+                                        {% if user.profile.profilePicture %}
+                                            <img class="w-8 h-8"
+                                                 src="{{ asset('files/users/' ~ user.profile.profilePicture) }}"
+                                                 alt="User profile">
+                                        {% else %}
+                                            <img class="w-8 h-8 rounded-full"
+                                                 src="{{ asset('files/users/default-avatar.png') }}"
+                                                 alt="User avatar">
+                                        {% endif %}
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                            {{ user.firstName }} {{ user.lastName }}
+                                        </p>
+                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                            {{ user.email }}
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                        <a href="{{ path('app_profile', {user: user.id}) }}">See</a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
