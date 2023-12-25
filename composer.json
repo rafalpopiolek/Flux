@@ -39,6 +39,7 @@
     "twig/twig": "^2.12|^3.0"
   },
   "require-dev": {
+    "hautelook/alice-bundle": "^2.13",
     "phpunit/phpunit": "^10.5",
     "roave/security-advisories": "dev-latest",
     "symfony/maker-bundle": "^1.52",
