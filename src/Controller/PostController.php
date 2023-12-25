@@ -77,6 +77,16 @@ class PostController extends AbstractController
     public function remove(Post $post): Response
     {
         $this->postRepository->removeReactions($post);
+
+        /** @var Media $media */
+        foreach ($post->getMedia() as $media) {
+            $path = $this->getParameter('media_storage') . '/' . $media->getFilename();
+
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+
         $this->postRepository->remove($post);
 
         $this->addFlash('success', 'Post removed successfully!');
