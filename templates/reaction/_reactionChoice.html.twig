@@ -41,27 +41,36 @@
 
         <template data-popover-target="content">
             <div data-popover-target="card"
-                 class="rounded-lg shadow-lg bg-gray-100 dark:bg-gray-700 absolute left-0 bottom-6"
+                 class="rounded-lg shadow-lg bg-gray-100 dark:bg-gray-700 absolute left-0 bottom-6 z-50"
             >
                 <div
                         id="content"
                         class="flex gap-3 items-center p-3 text-2xl"
                 >
-                    <p class="cursor-pointer" data-type="like" data-action="click->reaction#setReaction">
-                        &#128077
-                    </p>
-                    <p class="cursor-pointer" data-type="dislike" data-action="click->reaction#setReaction">
-                        &#128078
-                    </p>
-                    <p class="cursor-pointer" data-type="love" data-action="click->reaction#setReaction">
-                        &#128150
-                    </p>
-                    <p class="cursor-pointer" data-type="laugh" data-action="click->reaction#setReaction">
-                        &#128514
-                    </p>
-                    <p class="cursor-pointer" data-type="sad" data-action="click->reaction#setReaction">
-                        &#128549
-                    </p>
+                    {% include 'reaction/_reaction.html.twig' with {
+                        'icon': reactionEmojis['like'],
+                        'tooltip': 'Like',
+                    } %}
+
+                    {% include 'reaction/_reaction.html.twig' with {
+                        'icon': reactionEmojis['dislike'],
+                        'tooltip': 'Dislike',
+                    } %}
+
+                    {% include 'reaction/_reaction.html.twig' with {
+                        'icon': reactionEmojis['love'],
+                        'tooltip': 'Love',
+                    } %}
+
+                    {% include 'reaction/_reaction.html.twig' with {
+                        'icon': reactionEmojis['laugh'],
+                        'tooltip': 'Laugh',
+                    } %}
+
+                    {% include 'reaction/_reaction.html.twig' with {
+                        'icon': reactionEmojis['sad'],
+                        'tooltip': 'Sad',
+                    } %}
                 </div>
             </div>
         </template>

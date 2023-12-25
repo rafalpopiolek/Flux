@@ -1,0 +1,18 @@
+<div
+        data-controller="popover"
+        data-action="mouseenter->popover#show mouseleave->popover#hide"
+        class="relative"
+>
+    <p class="cursor-pointer transition ease-in-out animate-wiggle" data-type="like"
+       data-action="click->reaction#setReaction">
+        {{ icon|raw }}
+    </p>
+    <template data-popover-target="content">
+        <div
+                data-popover-target="card"
+                class="rounded shadow-sm absolute left-0 bottom-7 z-50 bg-gray-200 dark:bg-gray-600 dark:text-gray-300"
+        >
+            <p class="text-sm">{{ tooltip }}</p>
+        </div>
+    </template>
+</div>

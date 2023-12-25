@@ -7,7 +7,17 @@ module.exports = {
         "./vendor/tales-from-a-dev/flowbite-bundle/templates/**/*.html.twig",
     ],
     theme: {
-        extend: {},
+        extend: {
+            keyframes: {
+                wiggle: {
+                    '0%, 100%': {transform: 'rotate(-5deg)'},
+                    '50%': {transform: 'rotate(5deg)'},
+                }
+            },
+            animation: {
+                wiggle: 'wiggle 1s ease-in-out infinite',
+            },
+        },
     },
     plugins: []
 }
