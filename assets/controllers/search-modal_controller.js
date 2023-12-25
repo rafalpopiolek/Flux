@@ -8,6 +8,13 @@ export default class extends Controller {
     }
 
     close() {
+        document.querySelector('#default-user-search').value = ''
         this.dialogTarget.close()
+    }
+
+    clickOutside(event) {
+        if (event.target === this.dialogTarget) {
+            this.close()
+        }
     }
 }

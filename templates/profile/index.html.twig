@@ -4,6 +4,10 @@
     {% embed 'shared/_responsiveContainer.html.twig' %}
         {% block content %}
             <div class="bg-white dark:bg-gray-800 border dark:border-gray-900 py-3 px-8 rounded-sm">
+                <div class="my-4">
+                    {{ include('shared/_goBack.html.twig') }}
+                </div>
+
                 <div class="flex items-center justify-between space-x-4 dark:text-gray-300">
                     <div class="flex items-center space-x-4">
                         <div class="my-4">
