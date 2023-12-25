@@ -8,8 +8,8 @@ use App\Entity\Media;
 use App\Entity\Post;
 use App\Enum\Post\Status;
 use App\Form\CreatePostFormType;
+use App\Repository\PostRepository;
 use App\Trait\Form\FormResponseStatus;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class PostController extends AbstractController
     use FormResponseStatus;
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly PostRepository $postRepository,
         private readonly SluggerInterface $slugger,
     ) {
     }
@@ -61,8 +61,7 @@ class PostController extends AbstractController
             $post->setAuthor($this->getUser());
             $post->setStatus(Status::PUBLISHED);
 
-            $this->entityManager->persist($post);
-            $this->entityManager->flush();
+            $this->postRepository->save($post);
 
             $this->addFlash('success', 'Post created successfully!');
 
@@ -72,5 +71,16 @@ class PostController extends AbstractController
         return $this->render('post/create.html.twig', [
             'form' => $form->createView(),
         ], new Response(null, $this->setResponseStatus($form)));
+    }
+
+    #[Route(path: '/posts/{post}', name: 'app_post_remove', methods: ['POST'])]
+    public function remove(Post $post): Response
+    {
+        $this->postRepository->removeReactions($post);
+        $this->postRepository->remove($post);
+
+        $this->addFlash('success', 'Post removed successfully!');
+
+        return $this->redirectToRoute('app_home');
     }
 }

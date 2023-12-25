@@ -26,6 +26,21 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
+    public function save(Post $post, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($post);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Post $post): void
+    {
+        $this->getEntityManager()->remove($post);
+        $this->getEntityManager()->flush();
+    }
+
     public function createPostListQueryBuilder(User $user): Query
     {
         $sql = '
@@ -69,5 +84,22 @@ class PostRepository extends ServiceEntityRepository
                 'targetType' => 'post',
                 'userId' => $userId,
             ]);
+    }
+
+    public function removeReactions(Post $post): void
+    {
+        $sql = '
+            DELETE FROM App\Entity\Reaction r
+            WHERE r.targetId = :targetId AND r.targetType = :targetType
+        ';
+
+        $this
+            ->getEntityManager()
+            ->createQuery($sql)
+            ->setParameters([
+                'targetId' => $post->getId(),
+                'targetType' => 'post',
+            ])
+            ->execute();
     }
 }
