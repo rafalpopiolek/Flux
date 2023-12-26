@@ -7,7 +7,6 @@ namespace App\EventSubscriber;
 use App\Event\UserHasBeenCreatedEvent;
 use App\Exception\UserNotFoundException;
 use App\Repository\UserRepository;
-use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -22,7 +21,6 @@ final readonly class SendWelcomeEmailEventSubscriber
     ) {
     }
 
-    #[NoReturn]
     public function __invoke(UserHasBeenCreatedEvent $event): void
     {
         $user = $this->userRepository->find($event->getId());
