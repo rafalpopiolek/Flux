@@ -124,15 +124,21 @@
 
 {% block js %}
     <script>
-        const eventSource = new EventSource("{{ mercure('https://localhost/notification/' ~ app.user.id)|escape('js') }}");
+        fetch('{{ path('app_discover') }}')
+            .then(response => {
+                const hubUrl = response.headers.get('Link').match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1]
+                const hub = new URL(hubUrl)
+                hub.searchParams.append('topic', 'https://example.com/notifications/' + {{ app.user.id }})
 
-        eventSource.onmessage = event => {
-            const response = JSON.parse(event.data);
-            const unreadNotificationCounter = document.getElementById('unreadNotificationCounter');
-            const unreadNotificationCounterContainer = document.getElementById('unreadNotificationCounterContainer');
+                const eventSource = new EventSource(hub, {withCredentials: true})
+                eventSource.onmessage = event => {
+                    const data = JSON.parse(event.data);
+                    const unreadNotificationCounter = document.getElementById('unreadNotificationCounter');
+                    const unreadNotificationCounterContainer = document.getElementById('unreadNotificationCounterContainer');
 
-            unreadNotificationCounter.innerText = response.unreadNotifications;
-            unreadNotificationCounterContainer.classList.add('animate-pulse');
-        };
+                    unreadNotificationCounter.innerText = data.unreadNotifications;
+                    unreadNotificationCounterContainer.classList.add('animate-pulse');
+                }
+            })
     </script>
 {% endblock %}

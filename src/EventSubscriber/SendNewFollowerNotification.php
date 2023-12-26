@@ -46,17 +46,18 @@ final readonly class SendNewFollowerNotification
             data: [
                 'description' => $follower->getFullName() . ' is now following you!',
                 'occurredAt' => $event->occurredAt->format('d M Y H:i:s'),
-            ]
+            ],
         );
 
         $this->notificationRepository->save($notification);
 
         $update = new Update(
-            topics: sprintf('https://localhost/notification/%s', $followee->getId()),
+            topics: sprintf('https://example.com/notifications/%s', $followee->getId()),
             data: json_encode([
                 'content' => $follower->getFullName() . ' is now following you!',
                 'unreadNotifications' => $this->notificationRepository->countUnreadByUser($followee),
-            ])
+            ]),
+            private: true
         );
 
         $this->hub->publish($update);
