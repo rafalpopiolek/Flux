@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Notification;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -30,5 +33,20 @@ class NotificationRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function countUnreadByUser(User $user): int
+    {
+        return $this->createQueryBuilder('n')
+            ->select('count(n.id)')
+            ->where('n.recipient = :user')
+            ->andWhere('n.readAt IS NULL')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

@@ -15,8 +15,9 @@
                     </svg>
                     <span class="sr-only">Notifications</span>
                     {% if app.user.receivedNotifications %}
-                        <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -end-2 dark:border-gray-900">
-                            <span>{{ app.user.receivedNotifications|length }}</span>
+                        <div id="unreadNotificationCounterContainer"
+                             class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -end-2 dark:border-gray-900">
+                            <span id="unreadNotificationCounter">{{ app.user.receivedNotifications|length }}</span>
                         </div>
                     {% endif %}
                 </div>
@@ -120,3 +121,18 @@
         </div>
     </div>
 </nav>
+
+{% block js %}
+    <script>
+        const eventSource = new EventSource("{{ mercure('https://localhost/notification/' ~ app.user.id)|escape('js') }}");
+
+        eventSource.onmessage = event => {
+            const response = JSON.parse(event.data);
+            const unreadNotificationCounter = document.getElementById('unreadNotificationCounter');
+            const unreadNotificationCounterContainer = document.getElementById('unreadNotificationCounterContainer');
+
+            unreadNotificationCounter.innerText = response.unreadNotifications;
+            unreadNotificationCounterContainer.classList.add('animate-pulse');
+        };
+    </script>
+{% endblock %}

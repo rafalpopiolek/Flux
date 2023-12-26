@@ -8,6 +8,7 @@
         {% block stylesheets %}{% endblock %}
 
         {% block javascripts %}
+            {% block js %}{% endblock %}
             {{ importmap('app') }}
         {% endblock %}
     </head>
@@ -16,7 +17,7 @@
             {% include 'home/navbar.html.twig' %}
         {% endif %}
 
-        <div class="">
+        <div>
             {% block body %}{% endblock %}
         </div>
 

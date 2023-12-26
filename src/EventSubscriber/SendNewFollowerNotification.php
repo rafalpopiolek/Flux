@@ -10,6 +10,10 @@ use App\Event\UserHasBeenFollowedEvent;
 use App\Exception\UserNotFoundException;
 use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -18,9 +22,14 @@ final readonly class SendNewFollowerNotification
     public function __construct(
         private UserRepository $userRepository,
         private NotificationRepository $notificationRepository,
+        private HubInterface $hub,
     ) {
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function __invoke(UserHasBeenFollowedEvent $event): void
     {
         $follower = $this->userRepository->find($event->follower);
@@ -41,5 +50,15 @@ final readonly class SendNewFollowerNotification
         );
 
         $this->notificationRepository->save($notification);
+
+        $update = new Update(
+            topics: sprintf('https://localhost/notification/%s', $followee->getId()),
+            data: json_encode([
+                'content' => $follower->getFullName() . ' is now following you!',
+                'unreadNotifications' => $this->notificationRepository->countUnreadByUser($followee),
+            ])
+        );
+
+        $this->hub->publish($update);
     }
 }
