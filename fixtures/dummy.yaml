@@ -1,0 +1,35 @@
+App\Entity\User:
+    user_{1..100}:
+        email: '<email()>'
+        roles: [ 'ROLE_USER' ]
+        password: '<password()>'
+        firstName: '<firstName()>'
+        lastName: '<lastName()>'
+
+App\Entity\Profile:
+    profile_{@user_*}:
+        user: <current()>
+        bio: '<sentence()>'
+        gender: 'male'
+        age: '<numberBetween(18, 65)>'
+        twitterUrl: '<url()>'
+
+App\Entity\Post:
+    post_{1..1000}:
+        author: '@user_*'
+        content: '<paragraphs(1, true)>'
+        type: 'public'
+        status: 'published'
+
+App\Entity\Comment:
+    comment_{1..1000}:
+        post: '@post_*'
+        author: '@user_*'
+        content: '<paragraph(1, true)>'
+
+App\Entity\Reaction:
+    reaction_{1..1000}:
+        author: '@user_*'
+        type: '<randomElement([ "like", "dislike", "love", "sad", "laugh" ])>'
+        targetType: '<randomElement([ "post", "comment" ])>'
+        targetId: '<randomNumber(1, 1000)>'
