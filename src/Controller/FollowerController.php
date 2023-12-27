@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\UserHasBeenFollowedEvent;
+use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class FollowerController extends AbstractController
 {
     public function __construct(
         private readonly ManagerRegistry $managerRegistry,
+        private readonly MessageBusInterface $eventBus,
     ) {
     }
 
@@ -30,6 +34,14 @@ class FollowerController extends AbstractController
         }
 
         $currentUser->follow($userToFollow);
+
+        $this->eventBus->dispatch(
+            new UserHasBeenFollowedEvent(
+                follower: $currentUser->getId(),
+                followee: $userToFollow->getId(),
+                occurredAt: new DateTimeImmutable(),
+            )
+        );
 
         $this->managerRegistry->getManager()->flush();
 

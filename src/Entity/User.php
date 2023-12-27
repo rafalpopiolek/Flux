@@ -60,6 +60,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class)]
     private Collection $comments;
 
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Notification::class)]
+    private Collection $sentNotifications;
+
+    #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: Notification::class)]
+    private Collection $receivedNotifications;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
@@ -67,6 +73,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->followers = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->sentNotifications = new ArrayCollection();
+        $this->receivedNotifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -218,5 +226,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getFollowers(): Collection
     {
         return $this->followers;
+    }
+
+    public function getSentNotifications(): Collection
+    {
+        return $this->sentNotifications;
+    }
+
+    public function getReceivedNotifications(): Collection
+    {
+        return $this->receivedNotifications;
     }
 }

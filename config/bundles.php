@@ -55,6 +55,8 @@ return [
     Symfony\UX\LiveComponent\LiveComponentBundle::class => [
         'all' => true,
     ],
+    Symfony\Bundle\MercureBundle\MercureBundle::class => [
+        'all' => true,
     Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle::class => [
         'dev' => true,
         'test' => true,
