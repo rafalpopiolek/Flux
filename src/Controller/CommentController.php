@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\User;
+use App\Event\CommentHasBeenCreatedEvent;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
@@ -14,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CommentController extends AbstractController
@@ -24,6 +26,7 @@ class CommentController extends AbstractController
         private readonly CommentRepository $commentRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly PostRepository $postRepository,
+        private readonly MessageBusInterface $eventBus,
     ) {
     }
 
@@ -41,6 +44,13 @@ class CommentController extends AbstractController
 
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
+
+            $this->eventBus->dispatch(
+                new CommentHasBeenCreatedEvent(
+                    commentId: $comment->getId(),
+                    postId: $postId,
+                )
+            );
 
             $this->addFlash('success', 'Comment created successfully!');
 
