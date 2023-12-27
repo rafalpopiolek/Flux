@@ -49,4 +49,49 @@ class Notification
         $this->data = $data;
         $this->createdAt = new DateTimeImmutable();
     }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getSender(): User
+    {
+        return $this->sender;
+    }
+
+    public function getRecipient(): User
+    {
+        return $this->recipient;
+    }
+
+    public function getType(): Type
+    {
+        return $this->type;
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    public function getReadAt(): ?DateTimeInterface
+    {
+        return $this->readAt;
+    }
+
+    public function isRead(): bool
+    {
+        return $this->readAt !== null;
+    }
+
+    public function getCreatedAt(): DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setReadAt(DateTimeInterface $readAt): void
+    {
+        $this->readAt = $readAt;
+    }
 }

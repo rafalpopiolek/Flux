@@ -45,7 +45,6 @@ final readonly class SendNewFollowerNotification
             type: Type::NEW_FOLLOWER,
             data: [
                 'description' => $follower->getFullName() . ' is now following you!',
-                'occurredAt' => $event->occurredAt->format('d M Y H:i:s'),
             ],
         );
 

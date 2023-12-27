@@ -6,8 +6,8 @@ namespace App\Enum\Notification;
 
 enum Type: string
 {
-    case NEW_FOLLOWER = 'new_follower';
-    case NEW_POST = 'new_post';
-    case NEW_COMMENT = 'new_comment';
-    case NEW_REACTION = 'new_reaction';
+    case NEW_FOLLOWER = 'new follower';
+    case NEW_POST = 'new post';
+    case NEW_COMMENT = 'new comment';
+    case NEW_REACTION = 'new reaction';
 }

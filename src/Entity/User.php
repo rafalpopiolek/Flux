@@ -237,4 +237,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->receivedNotifications;
     }
+
+    public function unreadNotifications(): Collection
+    {
+        return $this->receivedNotifications->filter(fn (Notification $notification) => ! $notification->isRead());
+    }
 }

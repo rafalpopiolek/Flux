@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Event\UserHasBeenFollowedEvent;
-use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,7 +38,6 @@ class FollowerController extends AbstractController
             new UserHasBeenFollowedEvent(
                 follower: $currentUser->getId(),
                 followee: $userToFollow->getId(),
-                occurredAt: new DateTimeImmutable(),
             )
         );
 

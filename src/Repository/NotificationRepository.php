@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Notification;
 use App\Entity\User;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -48,5 +49,38 @@ class NotificationRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function getNotifications(int $userId): array
+    {
+        return $this
+            ->createQueryBuilder('n')
+            ->where('n.recipient = :userId')
+            ->setParameter('userId', $userId)
+            ->orderBy('n.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function markAllAsRead(int $userId, DateTimeInterface $readAt): void
+    {
+        $this->createQueryBuilder('n')
+            ->update()
+            ->set('n.readAt', ':readAt')
+            ->where('n.recipient = :userId')
+            ->setParameter('userId', $userId)
+            ->setParameter('readAt', $readAt)
+            ->getQuery()
+            ->execute();
+    }
+
+    public function removeAll(int $userId): void
+    {
+        $this->createQueryBuilder('n')
+            ->delete()
+            ->where('n.recipient = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->execute();
     }
 }
