@@ -56,7 +56,7 @@ final readonly class SendNewReactionNotification
             recipient: $recipient->getAuthor(),
             type: Type::NEW_REACTION,
             data: [
-                'description' => $reaction->getAuthor()->getFullName() . ' reacted to your post!',
+                'description' => $reaction->getAuthor()->getFullName() . " reacted to your $event->target!",
             ],
         );
 
@@ -65,7 +65,7 @@ final readonly class SendNewReactionNotification
         $update = new Update(
             topics: sprintf('https://example.com/notifications/%s', $recipient->getAuthor()->getId()),
             data: json_encode([
-                'content' => $reaction->getAuthor()->getFullName() . ' reacted to your post!',
+                'content' => $reaction->getAuthor()->getFullName() . " reacted to your $event->target!",
                 'unreadNotifications' => $this->notificationRepository->countUnreadByUser($recipient->getAuthor()),
             ]),
             private: true
