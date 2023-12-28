@@ -83,7 +83,7 @@ class PostController extends AbstractController
         if ($user->getId() !== $post->getAuthor()->getId()) {
             return $this->redirectToRoute('app_home');
         }
-        
+
         $this->postRepository->removeReactions($post);
 
         /** @var Media $media */
