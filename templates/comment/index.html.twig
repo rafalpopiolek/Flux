@@ -8,6 +8,117 @@
                     {{ include('shared/_goBack.html.twig') }}
                 </div>
 
+                <div class="m-5 px-8 py-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <div class="flex dark:text-gray-300">
+                        <div
+                                data-controller="popover"
+                                data-action="mouseenter->popover#show mouseleave->popover#hide"
+                                class="relative"
+                        >
+                            {% if post.author.profile.profilePicture %}
+                                <img src="{{ asset('files/users/' ~ post.author.profile.profilePicture) }}"
+                                     alt="User Profile" class="w-8 h-8 rounded-full mr-2">
+                            {% else %}
+                                <img src="https://static-00.iconduck.com/assets.00/avatar-default-symbolic-icon-512x488-rddkk3u9.png"
+                                     alt="User Profile" class="w-8 h-8 rounded-full mr-2">
+                            {% endif %}
+                            <template data-popover-target="content">
+                                <div data-popover-target="card"
+                                     class="rounded-lg bg-gray-100 dark:bg-gray-600 absolute left-5 top-10 z-50"
+                                >
+                                    {% include 'profile/_profileSmallDetails.html.twig' with {
+                                        'user': post.author
+                                    } %}
+                                </div>
+                            </template>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold">{{ post.author.firstName ~ ' ' ~ post.author.lastName }}</h2>
+                            <p
+                                    class="text-gray-500 text-sm relative"
+                                    data-controller="popover"
+                                    data-action="mouseenter->popover#show mouseleave->popover#hide"
+                            >
+                                {{ post.createdAt|ago }}
+                                <template data-popover-target="content">
+                                    <div
+                                            class="rounded-lg bg-gray-100 p-1 dark:bg-gray-600 dark:text-gray-100 absolute right-0 z-50"
+                                            data-popover-target="card"
+                                    >
+                                        {{ post.createdAt|date('d M Y H:i') }}
+                                    </div>
+                                </template>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="text-gray-800 dark:text-gray-300 leading-relaxed mb-4">
+                        <p>
+                            {{ post.content }}
+                        </p>
+                    </div>
+
+                    <div class="text-gray-800 dark:text-gray-300 leading-relaxed mb-4">
+                        <div>
+                            {% if post.media|length %}
+                                {% if post.media|length == 1 %}
+                                    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                                        {% for media in post.media %}
+                                            <img src="{{ asset('files/media/' ~ post.media[0].filename) }}"
+                                                 class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                                 alt="...">
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div id="controls-carousel" class="relative w-full" data-carousel="static">
+                                        <!-- Carousel wrapper -->
+                                        <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                                            {% for media in post.media %}
+                                                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                                                    <img src="{{ asset('files/media/' ~ media.filename) }}"
+                                                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                                         alt="...">
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <!-- Slider controls -->
+                                        <button type="button"
+                                                class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                                                data-carousel-prev
+                                        >
+                                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                                                     aria-hidden="true"
+                                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2" d="M5 1 1 5l4 4"></path>
+                                                </svg>
+                                                <span class="sr-only">Previous</span>
+                                            </span>
+                                        </button>
+                                        <button type="button"
+                                                class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                                                data-carousel-next
+                                        >
+                                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                                                     aria-hidden="true"
+                                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2" d="m1 9 4-4-4-4"></path>
+                                                </svg>
+                                                <span class="sr-only">Next</span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
                 <div class="px-8 py-4">
                     {{ form_start(form) }}
 
