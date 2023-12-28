@@ -9,10 +9,12 @@ use App\Entity\Reaction;
 use App\Entity\User;
 use App\Enum\Reaction\Target;
 use App\Enum\Reaction\Type;
+use App\Event\ReactionHasBeenSetEvent;
 use App\Repository\ReactionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 final readonly class SetReactionToTargetCommandHandler
@@ -20,6 +22,7 @@ final readonly class SetReactionToTargetCommandHandler
     public function __construct(
         private ReactionRepository $reactionRepository,
         private UserRepository $userRepository,
+        private MessageBusInterface $eventBus,
     ) {
     }
 
@@ -65,5 +68,14 @@ final readonly class SetReactionToTargetCommandHandler
 
             $this->reactionRepository->save($oldReaction);
         }
+
+        $this->eventBus->dispatch(
+            new ReactionHasBeenSetEvent(
+                authorId: $command->authorId,
+                targetId: $command->targetId,
+                target: $targetEnum->value,
+                reactionType: $command->reactionType,
+            )
+        );
     }
 }
