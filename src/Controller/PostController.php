@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Media;
 use App\Entity\Post;
+use App\Entity\User;
 use App\Enum\Post\Status;
 use App\Form\CreatePostFormType;
 use App\Repository\PostRepository;
@@ -76,6 +77,13 @@ class PostController extends AbstractController
     #[Route(path: '/posts/{post}', name: 'app_post_remove', methods: ['POST'])]
     public function remove(Post $post): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($user->getId() !== $post->getAuthor()->getId()) {
+            return $this->redirectToRoute('app_home');
+        }
+        
         $this->postRepository->removeReactions($post);
 
         /** @var Media $media */
