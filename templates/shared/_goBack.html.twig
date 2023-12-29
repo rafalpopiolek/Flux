@@ -1,5 +1,5 @@
 <a
-        href="{{ path('app_home') }}"
+        href="{% if route is defined %} {{ route }} {% else %} {{ path('app_home') }} {% endif %}"
         data-controller="popover"
         data-action="mouseenter->popover#show mouseleave->popover#hide"
         class="relative"

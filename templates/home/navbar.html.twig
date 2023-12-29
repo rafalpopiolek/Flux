@@ -31,7 +31,7 @@
                              alt="User avatar">
                     {% else %}
                         <img class="w-8 h-8 rounded-full"
-                             src="{{ asset('files/users/default-avatar.png') }}"
+                             src="{{ asset('files/public/default-avatar.png') }}"
                              alt="User avatar">
                     {% endif %}
                 </button>
@@ -107,10 +107,12 @@
 
                             <dialog
                                     data-search-modal-target="dialog"
-                                    data-action="click->search-modal#clickOutside"
-                                    class="bg-white dark:bg-gray-700 md:my-3 dark:text-gray-300 border dark:border-gray-600 mt-12"
+                                    data-action="close->search-modal#close click->search-modal#clickOutside"
+                                    class="open:flex bg-gray-100 dark:bg-gray-800 rounded-lg shadow-xl inset-0 w-full md:w-fit md:max-w-[50%] md:min-w-[30%] animate-fade-in backdrop:backdrop-blur-sm backdrop:bg-opacity-60"
                             >
-                                <twig:UserSearch></twig:UserSearch>
+                                <div class="grow overflow-auto p-1">
+                                    <twig:UserSearch></twig:UserSearch>
+                                </div>
                             </dialog>
                         </div>
                     </div>
