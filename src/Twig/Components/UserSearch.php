@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Components;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -22,9 +23,12 @@ final class UserSearch
     ) {
     }
 
-    public function getUsers(): array
+    /**
+     * @return User[]
+     */
+    public function users(): array
     {
-        if ($this->query === null || $this->query === '') {
+        if ($this->query === null || strlen($this->query) < 3) {
             return [];
         }
 
