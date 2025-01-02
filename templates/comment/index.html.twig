@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% embed 'shared/_responsiveContainer.html.twig' %}
+        {% block content %}
+            <div class="border dark:border-gray-700">
+                <div class="px-8 mt-4">
+                    {{ include('shared/_goBack.html.twig') }}
+                </div>
+
+                <div class="m-5 px-8 py-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <div class="flex dark:text-gray-300">
+                        <div
+                                data-controller="popover"
+                                data-action="mouseenter->popover#show mouseleave->popover#hide"
+                                class="relative"
+                        >
+                            {% if post.author.profile.profilePicture %}
+                                <img src="{{ asset('files/users/' ~ post.author.profile.profilePicture) }}"
+                                     alt="User Profile" class="w-8 h-8 rounded-full mr-2">
+                            {% else %}
+                                <img src="{{ asset('files/public/default-avatar.png') }}"
+                                     alt="User Profile" class="w-8 h-8 rounded-full mr-2">
+                            {% endif %}
+                            <template data-popover-target="content">
+                                <div data-popover-target="card"
+                                     class="rounded-lg bg-gray-100 dark:bg-gray-600 absolute left-5 top-10 z-50"
+                                >
+                                    {% include 'profile/_profileSmallDetails.html.twig' with {
+                                        'user': post.author
+                                    } %}
+                                </div>
+                            </template>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold">{{ post.author.firstName ~ ' ' ~ post.author.lastName }}</h2>
+                            <p
+                                    class="text-gray-500 text-sm relative"
+                                    data-controller="popover"
+                                    data-action="mouseenter->popover#show mouseleave->popover#hide"
+                            >
+                                {{ post.createdAt|ago }}
+                                <template data-popover-target="content">
+                                    <div
+                                            class="rounded-lg bg-gray-100 p-1 dark:bg-gray-600 dark:text-gray-100 absolute right-0 z-50"
+                                            data-popover-target="card"
+                                    >
+                                        {{ post.createdAt|date('d M Y H:i') }}
+                                    </div>
+                                </template>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="text-gray-800 dark:text-gray-300 leading-relaxed mb-4">
+                        <p>
+                            {{ post.content }}
+                        </p>
+                    </div>
+
+                    <div class="text-gray-800 dark:text-gray-300 leading-relaxed mb-4">
+                        <div>
+                            {% if post.media|length %}
+                                {% if post.media|length == 1 %}
+                                    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                                        {% for media in post.media %}
+                                            <img src="{{ asset('files/media/' ~ post.media[0].filename) }}"
+                                                 class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                                 alt="...">
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div id="controls-carousel" class="relative w-full" data-carousel="static">
+                                        <!-- Carousel wrapper -->
+                                        <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+                                            {% for media in post.media %}
+                                                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                                                    <img src="{{ asset('files/media/' ~ media.filename) }}"
+                                                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                                         alt="...">
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                        <!-- Slider controls -->
+                                        <button type="button"
+                                                class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                                                data-carousel-prev
+                                        >
+                                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                                                     aria-hidden="true"
+                                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2" d="M5 1 1 5l4 4"></path>
+                                                </svg>
+                                                <span class="sr-only">Previous</span>
+                                            </span>
+                                        </button>
+                                        <button type="button"
+                                                class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                                                data-carousel-next
+                                        >
+                                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                                                     aria-hidden="true"
+                                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2" d="m1 9 4-4-4-4"></path>
+                                                </svg>
+                                                <span class="sr-only">Next</span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-8 py-4">
+                    {{ form_start(form) }}
+
+                    <div data-controller="character-counter">
+                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Add
+                            comment</label>
+                        <textarea id="message" rows="4"
+                                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  name="{{ field_name(form.content) }}" minlength="2" maxlength="255"
+                                  data-character-counter-target="input"
+                                  placeholder="{{ field_label(form.content) }}">{{ field_value(form.content) }}</textarea>
+                        <p class="flex justify-end dark:text-gray-300 mt-2">
+                            <span data-character-counter-target="counter"></span>/500
+                        </p>
+                    </div>
+
+                    <button type="submit"
+                            class="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Add
+                    </button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+            {% for result in comments %}
+                <div class="row my-3">
+                    <div class="col-md-10 bg-gray-100 dark:bg-gray-800 p-3 border dark:border-gray-700 dark:text-gray-200">
+                        <div class="flex justify-between bg-gray-50 dark:bg-gray-700 p-2 border dark:border-gray-600 rounded-lg">
+                            <div>
+                                <span class="">{{ result.comment.author.firstName }} {{ result.comment.author.lastName }}</span>
+                                <span class="text-gray-400 ml-1 text-sm">({{ result.comment.createdAt|ago }})</span>
+                            </div>
+                            <div>
+                                {% include 'reaction/_reactionChoice.html.twig' with {
+                                    'id': result.comment.id,
+                                    'target': 'comments',
+                                    'reaction': result.reaction,
+                                } %}
+                            </div>
+                        </div>
+                        <div class="py-4 px-2">
+                            {{ result.comment.content }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

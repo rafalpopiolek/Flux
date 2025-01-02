@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% embed 'shared/_responsiveContainer.html.twig' %}
+        {% block content %}
+            <div class="border dark:border-gray-700 p-8">
+                <div class="my-4">
+                    {% include'shared/_goBack.html.twig' with {
+                        'route': path('app_profile', {user: user.id})
+                    } %}
+                </div>
+
+                <p class="flex justify-center text-xl mb-7 dark:text-gray-300">Update your profile</p>
+
+                {{ form_start(form) }}
+
+                <div class="mt-4">
+                    <label for="number-input"
+                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Age</label>
+                    <input type="number" min="0" step="1" id="number-input"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                           name="{{ field_name(form.age) }}"
+                           value="{{ field_value(form.age) }}"
+                    >
+                </div>
+
+                <div class="mt-4">
+                    {{ form_row(form.twitterUrl) }}
+                </div>
+
+                <div class="mt-4">
+                    {{ form_row(form.website_url) }}
+                </div>
+
+                <div class="mt-4">
+                    {{ form_row(form.gender) }}
+                </div>
+
+                <div class="mt-4">
+                    {{ form_row(form.profilePicture) }}
+                </div>
+
+                <div data-controller="character-counter" class="mt-4">
+                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Bio
+                    </label>
+                    <textarea id="message" rows="4"
+                              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              name="{{ field_name(form.bio) }}" minlength="2" maxlength="500"
+                              data-character-counter-target="input"
+                    >{{ field_value(form.bio) }}</textarea>
+
+                    <p class="flex justify-end dark:text-gray-300 mt-2">
+                        <span data-character-counter-target="counter"></span>/500
+                    </p>
+                </div>
+
+                <button type="submit"
+                        class="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-700 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Save
+                </button>
+                {{ form_end(form) }}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -1,0 +1,144 @@
+<nav class="sticky top-0 z-50 bg-white border-gray-200 dark:bg-gray-900 border-b dark:border-gray-800">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="{{ path('app_home') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <span class="self-center text-2xl font-semibold whitespace-nowrap tracking-wide text-indigo-700 dark:text-indigo-500 hover:underline">Flux</span>
+        </a>
+
+        <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <div class="flex items-center gap-6">
+
+                <a href="{{ path('app_notification') }}"
+                   class="relative inline-flex items-center p-2 text-sm font-medium text-center text-white rounded-full bg-indigo-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                         class="w-6 h-6 fill-gray-200 cursor-pointer">
+                        <path d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v25.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm0 96c61.9 0 112 50.1 112 112v25.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V208c0-61.9 50.1-112 112-112zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"/>
+                    </svg>
+                    <span class="sr-only">Notifications</span>
+                    <div id="unreadNotificationCounterContainer"
+                         class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -end-2 dark:border-gray-900">
+                        <span id="unreadNotificationCounter">{{ app.user.unreadNotifications|length }}</span>
+                    </div>
+                </a>
+
+                <button type="button"
+                        class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                        id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                        data-dropdown-placement="bottom">
+
+                    {% if app.user.profile.profilePicture %}
+                        <img class="w-10 h-10 rounded-full"
+                             src="{{ asset('files/users/' ~ app.user.profile.profilePicture) }}"
+                             alt="User avatar">
+                    {% else %}
+                        <img class="w-8 h-8 rounded-full"
+                             src="{{ asset('files/public/default-avatar.png') }}"
+                             alt="User avatar">
+                    {% endif %}
+                </button>
+            </div>
+
+            <!-- Dropdown menu -->
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-md shadow dark:bg-gray-700 dark:divide-gray-600 divide-y"
+                 id="user-dropdown">
+                <div class="px-4 py-3">
+                    <span class="block text-sm text-gray-900 dark:text-white">{{ app.user.fullName }}</span>
+                    <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ app.user.email }}</span>
+                </div>
+                <ul class="" aria-labelledby="user-menu-button">
+                    <li>
+                        <a href="{{ path('app_profile', {user: app.user.id}) }}"
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer"
+                           data-controller="theme"
+                           data-action="theme#toggle"
+                        >
+                            Change Theme
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_logout') }}"
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white border-t border-gray-100 dark:border-gray-600">
+                            Sign out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M1 1h15M1 7h15M1 13h15"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+            <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                <li>
+                    <div class="flex items-center">
+                        <label for="simple-search" class="sr-only">Search</label>
+                        <div
+                                data-controller="search-modal"
+                                data-action="turbo:before-cache@window->search-modal#close"
+                                class="relative w-full"
+                        >
+
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <svg class="h-5 w-5 fill-black dark:fill-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                     x="0px" y="0px"
+                                     width="30"
+                                     height="30" viewBox="0 0 30 30">
+                                    <path d="M 13 3 C 7.4889971 3 3 7.4889971 3 13 C 3 18.511003 7.4889971  23 13 23 C 15.396508 23 17.597385 22.148986 19.322266 20.736328 L 25.292969 26.707031 A 1.0001 1.0001 0 1 0 26.707031 25.292969 L 20.736328 19.322266 C 22.148986 17.597385 23 15.396508 23 13 C 23 7.4889971 18.511003 3 13 3 z M 13 5 C 17.430123 5 21 8.5698774 21 13 C 21 17.430123 17.430123 21 13 21 C 8.5698774 21 5 17.430123 5 13 C 5 8.5698774 8.5698774 5 13 5 z">
+                                    </path>
+                                </svg>
+                            </div>
+
+                            <input data-action="click->search-modal#open"
+                                   type="text" id="simple-search"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-96 ps-10 p-2.5 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   placeholder="Search Flux" required autocomplete="off">
+
+                            <dialog
+                                    data-search-modal-target="dialog"
+                                    data-action="close->search-modal#close click->search-modal#clickOutside"
+                                    class="open:flex bg-gray-100 dark:bg-gray-800 rounded-lg shadow-xl inset-0 w-full md:w-fit md:max-w-[50%] md:min-w-[30%] animate-fade-in backdrop:backdrop-blur-sm backdrop:bg-opacity-60"
+                            >
+                                <div class="grow overflow-auto p-1">
+                                    <twig:UserSearch></twig:UserSearch>
+                                </div>
+                            </dialog>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% block js %}
+    <script>
+        fetch('{{ path('app_discover') }}')
+            .then(response => {
+                const hubUrl = response.headers.get('Link').match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1]
+                const hub = new URL(hubUrl)
+                hub.searchParams.append('topic', 'https://example.com/notifications/' + {{ app.user.id }})
+
+                const eventSource = new EventSource(hub, {withCredentials: true})
+                eventSource.onmessage = event => {
+                    const data = JSON.parse(event.data);
+                    const unreadNotificationCounter = document.getElementById('unreadNotificationCounter');
+                    const unreadNotificationCounterContainer = document.getElementById('unreadNotificationCounterContainer');
+
+                    unreadNotificationCounter.innerText = data.unreadNotifications;
+                    unreadNotificationCounterContainer.classList.add('animate-pulse');
+                }
+            })
+    </script>
+{% endblock %}

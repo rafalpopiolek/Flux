@@ -13,8 +13,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Index(fields: ['email'], name: 'email_idx')]
+#[ORM\Index(fields: ['firstName'], name: 'first_name_idx')]
+#[ORM\Index(fields: ['lastName'], name: 'last_name_idx')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -44,13 +47,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Profile::class, cascade: ['persist', 'remove'])]
+    private Profile $profile;
+
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'followers')]
+    #[ORM\JoinTable(name: 'followers')]
+    private Collection $follows;
+
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'follows')]
+    private Collection $followers;
+
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, cascade: ['remove'])]
     private Collection $posts;
+
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class)]
+    private Collection $comments;
+
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Notification::class)]
+    private Collection $sentNotifications;
+
+    #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: Notification::class)]
+    private Collection $receivedNotifications;
 
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
+        $this->follows = new ArrayCollection();
+        $this->followers = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->sentNotifications = new ArrayCollection();
+        $this->receivedNotifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -139,6 +166,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
@@ -148,5 +180,69 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPosts(): Collection
     {
         return $this->posts;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function getProfile(): Profile
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(Profile $profile): static
+    {
+        if ($this !== $profile->getUser()) {
+            $profile->setUser($this);
+        }
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    public function getFollows(): Collection
+    {
+        return $this->follows;
+    }
+
+    public function follow(self $user): static
+    {
+        if (! $this->follows->contains($user)) {
+            $this->follows[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function unfollow(self $user): static
+    {
+        $this->follows->removeElement($user);
+
+        return $this;
+    }
+
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
+    }
+
+    public function getSentNotifications(): Collection
+    {
+        return $this->sentNotifications;
+    }
+
+    public function getReceivedNotifications(): Collection
+    {
+        return $this->receivedNotifications;
+    }
+
+    public function unreadNotifications(): Collection
+    {
+        return $this->receivedNotifications->filter(fn (Notification $notification) => ! $notification->isRead());
     }
 }

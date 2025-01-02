@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Auth;
 
+use App\Entity\Profile;
 use App\Entity\User;
 use App\Enum\Identity\Role;
 use App\Event\UserHasBeenCreatedEvent;
 use App\Form\RegistrationFormType;
+use App\Trait\Form\FormResponseStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends AbstractController
 {
+    use FormResponseStatus;
+
     public function __construct(
         private readonly UserPasswordHasherInterface $userPasswordHasher,
         private readonly EntityManagerInterface $entityManager,
@@ -43,6 +47,8 @@ class RegistrationController extends AbstractController
                 Role::USER->value,
             ]);
 
+            $user->setProfile(new Profile());
+
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
@@ -55,6 +61,6 @@ class RegistrationController extends AbstractController
 
         return $this->render('auth/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-        ]);
+        ], new Response(null, $this->setResponseStatus($form)));
     }
 }

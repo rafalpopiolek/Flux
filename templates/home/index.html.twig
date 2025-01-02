@@ -1,5 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Home
+    {% embed 'shared/_responsiveContainer.html.twig' %}
+        {% block content %}
+            <div class="flex mb-7">
+                <a href="{{ path('app_post_create') }}"
+                   class="w-full text-center bg-transparent transition ease-in-out outline outline-1 outline-indigo-500 hover:bg-indigo-500 hover:text-gray-100 dark:text-gray-300 py-2 px-16 rounded-md hover-outline-none">
+                    Add Flux
+                </a>
+            </div>
+
+            {% include 'post/_postListPaginated.html.twig' with {
+                'pager': pager
+            } %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

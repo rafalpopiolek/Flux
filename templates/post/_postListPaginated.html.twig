@@ -1,0 +1,21 @@
+<turbo-frame id="post-browse-list-{{ pager.currentPage }}">
+    {% for result in pager %}
+        {% include 'post/_postContainer.html.twig' with {
+            'post': result.post,
+            'reaction': result.reaction,
+        } %}
+    {% endfor %}
+
+    {% if pager.hasNextPage %}
+        <turbo-frame id="post-browse-list-{{ pager.nextPage }}"
+                     src="{{ pagerfanta_page_url(pager, pager.nextPage) }}" loading="lazy"></turbo-frame>
+    {% else %}
+        {% if pager|length %}
+            <div class="bg-white dark:bg-gray-800 py-3 px-6 rounded-lg border dark:border-gray-700 w-full">
+                <p class="text-gray-500 dark:text-gray-300 text-center">No more posts to load, try to
+                    refresh
+                    the page.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+</turbo-frame>

@@ -1,0 +1,35 @@
+<div class="dark:bg-gray-900 border dark:border-gray-900 py-3 px-5 rounded-lg">
+    <div class="flex items-center justify-between space-x-4 dark:text-gray-300">
+        <div class="flex items-center space-x-4">
+            <div class="mb-4">
+                <h1 class="text-xl font-bold">
+                    {{ user.firstName ~ ' ' ~ user.lastName }}
+                </h1>
+                <p class="text-gray-500">{{ user.email }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="mb-4 dark:text-gray-300">
+        {% if user.profile.age %}
+            <p class="mt-1">
+                <span class="font-bold">Age: </span>
+                {{ user.profile.age }}
+            </p>
+        {% endif %}
+
+        <div class="mt-1">
+            <span class="font-bold">Joined: </span>
+            <span class="text-gray-400 text-sm">({{ user.createdAt|ago }})</span>
+        </div>
+
+        <p class="mt-1"><span class="font-bold">Posts:</span> {{ user.posts|length }}</p>
+        <p class="mt-1"><span class="font-bold">Comments:</span> {{ user.comments|length }}</p>
+    </div>
+    <div class="mt-1 mb-2 text-blue-500 text-center">
+        <a
+                class="bg-transparent hover:bg-indigo-500 text-indigo-500 p-2 hover:text-white dark:hover:text-gray-300 font-semibold border border-indigo-500 hover:border-transparent rounded"
+                data-turbo-frame="_top" href="{{ path('app_profile', {user: user.id}) }}">
+            More
+        </a>
+    </div>
+</div>

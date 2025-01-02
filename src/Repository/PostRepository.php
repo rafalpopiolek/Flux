@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\User;
+use App\Enum\Post\Type;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,5 +24,82 @@ class PostRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Post::class);
+    }
+
+    public function save(Post $post, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($post);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Post $post): void
+    {
+        $this->getEntityManager()->remove($post);
+        $this->getEntityManager()->flush();
+    }
+
+    public function createPostListQueryBuilder(User $user): Query
+    {
+        $sql = '
+            SELECT p as post, r.type as reaction
+            FROM App\Entity\Post p
+            LEFT JOIN App\Entity\Reaction r WITH p.id = r.targetId AND r.targetType = :targetType AND r.author = :userId
+            WHERE p.author IN (:followedUsers) OR p.type = :postType
+            ORDER BY p.createdAt DESC
+        ';
+
+        $followedUsers = array_merge(
+            [$user],
+            $user->getFollows()->toArray()
+        );
+
+        return $this
+            ->getEntityManager()
+            ->createQuery($sql)
+            ->setParameters([
+                'targetType' => 'post',
+                'postType' => Type::PUBLIC,
+                'userId' => $user->getId(),
+                'followedUsers' => $followedUsers,
+            ]);
+    }
+
+    public function createPostListForUserQueryBuilder(?int $userId): Query
+    {
+        $sql = '
+            SELECT p as post, r.type as reaction
+            FROM App\Entity\Post p
+            LEFT JOIN App\Entity\Reaction r WITH p.id = r.targetId AND r.targetType = :targetType AND r.author = :userId
+            WHERE p.author = :userId
+            ORDER BY p.createdAt DESC
+        ';
+
+        return $this
+            ->getEntityManager()
+            ->createQuery($sql)
+            ->setParameters([
+                'targetType' => 'post',
+                'userId' => $userId,
+            ]);
+    }
+
+    public function removeReactions(Post $post): void
+    {
+        $sql = '
+            DELETE FROM App\Entity\Reaction r
+            WHERE r.targetId = :targetId AND r.targetType = :targetType
+        ';
+
+        $this
+            ->getEntityManager()
+            ->createQuery($sql)
+            ->setParameters([
+                'targetId' => $post->getId(),
+                'targetType' => 'post',
+            ])
+            ->execute();
     }
 }

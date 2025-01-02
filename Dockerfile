@@ -1,7 +1,7 @@
 #syntax=docker/dockerfile:1.4
 
 # Versions
-FROM dunglas/frankenphp:latest-alpine AS frankenphp_upstream
+FROM dunglas/frankenphp:1-alpine AS frankenphp_upstream
 FROM composer/composer:2-bin AS composer_upstream
 
 
@@ -29,7 +29,6 @@ RUN set -eux; \
 		apcu \
 		intl \
 		opcache \
-        amqp \
 		zip \
 	;
 
@@ -68,6 +67,7 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 RUN set -eux; \
 	install-php-extensions \
 		xdebug \
+        amqp \
 	;
 
 COPY --link frankenphp/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/

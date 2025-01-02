@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+    {% embed 'shared/_responsiveContainer.html.twig' %}
+        {% block content %}
+            <twig:UserSearch />
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

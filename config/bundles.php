@@ -28,4 +28,34 @@ return [
         'dev' => true,
         'test' => true,
     ],
+    Symfonycasts\TailwindBundle\SymfonycastsTailwindBundle::class => [
+        'all' => true,
+    ],
+    TalesFromADev\Twig\Extra\Tailwind\Bridge\Symfony\Bundle\TalesFromADevTwigExtraTailwindBundle::class => [
+        'all' => true,
+    ],
+    TalesFromADev\FlowbiteBundle\FlowbiteBundle::class => [
+        'all' => true,
+    ],
+    Symfony\UX\StimulusBundle\StimulusBundle::class => [
+        'all' => true,
+    ],
+    Symfony\UX\Turbo\TurboBundle::class => [
+        'all' => true,
+    ],
+    Knp\Bundle\TimeBundle\KnpTimeBundle::class => [
+        'all' => true,
+    ],
+    BabDev\PagerfantaBundle\BabDevPagerfantaBundle::class => [
+        'all' => true,
+    ],
+    Symfony\UX\TwigComponent\TwigComponentBundle::class => [
+        'all' => true,
+    ],
+    Symfony\UX\LiveComponent\LiveComponentBundle::class => [
+        'all' => true,
+    ],
+    Symfony\Bundle\MercureBundle\MercureBundle::class => [
+        'all' => true,
+    ],
 ];
